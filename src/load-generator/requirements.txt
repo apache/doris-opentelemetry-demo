@@ -7,7 +7,7 @@ configargparse==1.7
 deprecated==1.2.18
 flask==3.1.0
 flask-basicauth==0.2.0
-flask-cors==5.0.1
+flask-cors==6.0.0
 gevent==24.11.1
 geventhttpclient==2.3.3
 googleapis-common-protos==1.69.1
