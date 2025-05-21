@@ -329,7 +329,7 @@ services:
           memory: 65M
     restart: unless-stopped
     ports:
-      - "${ENVOY_PORT}"
+      - "${ENVOY_PORT}:${ENVOY_PORT}"
       - 10000
     environment:
       - FRONTEND_PORT
