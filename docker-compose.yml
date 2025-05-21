@@ -330,7 +330,7 @@ services:
     restart: unless-stopped
     ports:
       - "${ENVOY_PORT}:${ENVOY_PORT}"
-      - 10000
+      - 10000:10000
     environment:
       - FRONTEND_PORT
       - FRONTEND_HOST
@@ -730,8 +730,6 @@ services:
         limits:
           memory: 1024M
     restart: unless-stopped
-    environment:
-      - "GF_INSTALL_PLUGINS=grafana-opensearch-datasource"
     volumes:
       - ./src/grafana/grafana.ini:/etc/grafana/grafana.ini
       - ./src/grafana/provisioning/:/etc/grafana/provisioning/
@@ -794,7 +792,7 @@ services:
           memory: 300M
     restart: unless-stopped
     ports:
-      - "${PROMETHEUS_PORT}"
+      - "${PROMETHEUS_PORT}:${PROMETHEUS_PORT}"
     logging: *logging
 
   # Doris
