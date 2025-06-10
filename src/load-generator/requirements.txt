@@ -36,7 +36,7 @@ openfeature-hooks-opentelemetry==0.2.0
 protobuf==5.29.3
 psutil==6.1.1
 pyzmq==26.2.1
-requests==2.32.3
+requests==2.32.4
 roundrobin==0.0.4
 six==1.17.0
 typing-extensions==4.12.2
