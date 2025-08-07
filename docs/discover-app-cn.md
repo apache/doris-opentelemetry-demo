@@ -2,34 +2,19 @@
 
 本插件目前为开发测试阶段，尚未签名，请勿用于生产环境。
 
-## 安装文档
-1. 解压并将本项目复制到 Grafana 插件目录：
-cp -r selectdb-discover-app /var/lib/grafana/plugins/
-2. 修改 Grafana 配置，允许加载未签名插件：
-```
-# grafana.ini
-[plugins]
-allow_loading_unsigned_plugins = selectdb-discover-app
-```
-或使用环境变量（Docker）：
-```
-export GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=selectdb-discover-app
-```
-3. 重启 Grafana：
-sudo systemctl restart grafana-server
-
-4. 登录 Grafana 并启用插件，在 Plugins 中找到 Discover-App，点击 Enable
+## 启用 Discover-App 插件
+登录 Grafana 并启用插件，在 Plugins 中找到 Discover-App，点击 Enable
 
 ![enable-plugin](./static/enable-plugin.png)
 
-5. 导航栏中将出现 Discover、Traces 等页面。
-
-## 使用文档
 ### 添加数据源
 在 Data sources 中为 Doris 增加数据源
+
 ![enable-plugin](./static/add-datasource.png)
 
-Discover 功能使用说明
+
+## Discover 日志检索功能
+
 ### 界面
 
 Discover 界面类似于 Kibana Discover 页面，为日志检索进行深度体验优化，分为 4 个区域：
@@ -39,6 +24,7 @@ Discover 界面类似于 Kibana Discover 页面，为日志检索进行深度体
 - 下方的明细数据展示和交互区：展示日志明细，可以点开查看某条日志的明细，支持表格和 JSON 两种格式，表格形式还支持交互式创建筛选条件
 
 依次选择数据源、Database和Table，Discover会自动查询表中的字段并选中第一个时间字段。
+
 ![discover-header](./static/discover-header.png)
 
 ### 显示字段比例
@@ -60,6 +46,7 @@ Discover 界面类似于 Kibana Discover 页面，为日志检索进行深度体
 ```
 
 在搜索框下面，选择搜索，然后在右侧输入 kafka ，单击查询，在搜索模式下，搜索包含关键词 kafka 的日志，明细中的 kafka 会高亮显示，趋势图的数据条数对应变化。
+
 ![discover-search](./static/discover-search.png)
 
 
@@ -114,19 +101,23 @@ Studio 将会识别 VARIANT 数据类型，自动展开该数据类型的层级�
 ![discover-variant3](./static/discover-variant3.png)
 
 ## FAQ
-### 为什么我看不到数据？
+
+#### 为什么我看不到数据？
 1. 请检查集群、表、时间字段是否选择正确。
 2. 请检查时间段是否选择正确。
 3. 请检查是否有筛选条件。
-### 我应该怎么为我的表创建倒排索引？
+4. 
+#### 我应该怎么为我的表创建倒排索引？
 你可以在建表时置顶倒排索引，也可以在已有表上创建倒排索引。
 请参考文档 管理索引。
-### 使用 Variant 类型存储数据有什么教程？
+
+#### 使用 Variant 类型存储数据有什么教程？
 请参考文档 Variant 类型。
-### 上下文索引中的日志不够精确，有些日志找不到？
+
+#### 上下文索引中的日志不够精确，有些日志找不到？
 使用更高精度的 DateTime 字段，可以提高上下文索引的精确度。比如 DateTime(3)。
 
-# Traces 功能使用说明
+## Traces 功能
 ## 界面
 上方：数据源、库表、时间字段、时间范围选择
 
