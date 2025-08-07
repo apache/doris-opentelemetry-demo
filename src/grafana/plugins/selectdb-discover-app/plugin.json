@@ -1,0 +1,54 @@
+{
+    "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+    "type": "app",
+    "name": "Discover-App",
+    "id": "selectdb-discover-app",
+    "backend": true,
+    "executable": "gpx_discover_app",
+    "info": {
+        "keywords": [
+            "app"
+        ],
+        "description": "",
+        "author": {
+            "name": "SelectDB"
+        },
+        "logos": {
+            "small": "img/logo.svg",
+            "large": "img/logo.svg"
+        },
+        "screenshots": [],
+        "version": "1.0.0",
+        "updated": "2025-08-07"
+    },
+    "includes": [
+        {
+            "type": "page",
+            "name": "Discover",
+            "path": "/a/selectdb-discover-app/discover",
+            "addToNav": true
+        },
+        {
+            "type": "page",
+            "name": "Traces",
+            "path": "/a/selectdb-discover-app/traces",
+            "addToNav": true
+        },
+        {
+            "type": "page",
+            "icon": "cog",
+            "name": "Configuration",
+            "path": "/plugins/selectdb-discover-app",
+            "role": "Admin",
+            "addToNav": true
+        }
+    ],
+    "dependencies": {
+        "grafanaDependency": ">=10.4.0",
+        "plugins": []
+    },
+    "css": [
+        "styles/tailwind.css"
+    ],
+    "buildMode": "production"
+}
