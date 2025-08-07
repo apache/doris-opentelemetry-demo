@@ -78,7 +78,6 @@ Discover 界面类似于 Kibana Discover 页面，为日志检索进行深度体
 
 ![discover-surrounding](./static/discover-surrounding.png)
 
-[图片]
 
 ### 过滤 VARIANT 数据类型
 在 Doris 2.1 中引入一种新的数据类型 VARIANT，它可以存储半结构化 JSON 数据。VARIANT 类型特别适用于处理复杂的嵌套结构，而这些结构可能随时会发生变化。
