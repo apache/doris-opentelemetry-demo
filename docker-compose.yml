@@ -732,16 +732,16 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: development
-      GF_LOG_FILTERS: plugin.selectdb-discover-app:debug
+      GF_LOG_FILTERS: plugin.doris-app:debug
       GF_LOG_LEVEL: debug
       GF_DATAPROXY_LOGGING: 1
-      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: selectdb-discover-app
+      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: doris-app
       GF_AUTH_ANONYMOUS_ENABLED: true
       GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
       GF_INSTALL_PLUGINS: grafana-opensearch-datasource
     volumes:
       - ./src/grafana/grafana.ini:/etc/grafana/grafana.ini
-      - ./src/grafana/plugins/selectdb-discover-app:/var/lib/grafana/plugins/selectdb-discover-app
+      - ./src/grafana/plugins/doris-app:/var/lib/grafana/plugins/doris-app
       - ./src/grafana/provisioning/:/etc/grafana/provisioning/
     ports:
       - "33000:${GRAFANA_PORT}"
