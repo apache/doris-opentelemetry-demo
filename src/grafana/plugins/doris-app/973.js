@@ -1487,19 +1487,6 @@ function DiscoverFilter() {
 ;// ./utils/icon.tsx
 
 
-// export function getFieldIcon(type: string) {
-//     if (type.toUpperCase().includes('STRING')) {
-//         return <Icon name="text-fields" />;
-//     }
-//     if (type.toUpperCase().includes('NUMBER')) {
-//         return <Icon name="github" />;
-//     }
-//     if (type.toUpperCase().includes('DATE')) {
-//         return <Icon name="calendar-alt" />;
-//     } else {
-//         return <Icon name="brackets-curly" />;
-//     }
-// }
 const FIELD_TYPES = [
     {
         key: 'STRING',
@@ -5042,4 +5029,4 @@ function PageDiscover() {
 /***/ })
 
 }]);
-//# sourceMappingURL=973.js.map?_cache=26eabcad633ee0b5569f
+//# sourceMappingURL=973.js.map?_cache=db96798c47082e02f388
