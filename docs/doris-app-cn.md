@@ -4,7 +4,7 @@
 
 ## 启用 Doris-App 插件
 
-登录 Grafana，在左侧菜单中点击 `Plugins and data > Plugins`，进入插件页面，搜索 doris 找到 `Doris` 插件
+登录 Grafana，在左侧菜单中点击 `Administration > Plugins and data > Plugins`，进入插件页面，搜索 doris 找到 `Doris` 插件
 
 ![enable-plugin](./static/plugins.png)
 
