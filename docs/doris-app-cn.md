@@ -3,12 +3,28 @@
 本插件目前为开发测试阶段，尚未签名，请勿用于生产环境。
 
 ## 启用 Doris-App 插件
-登录 Grafana 并启用插件，在 Plugins 中找到 Doris-App，点击 Enable
+
+登录 Grafana，在左侧菜单中点击 `Plugins and data > Plugins`，进入插件页面，搜索 doris 找到 `Doris` 插件
+
+![enable-plugin](./static/plugins.png)
+
+点击进入插件，点击 `Enable` 启用插件，启用后菜单栏会出现 `More apps` 菜单，点击就可以找 Doris 插件了
 
 ![enable-plugin](./static/enable-plugin.png)
 
 ### 添加数据源
-在 Data sources 中为 Doris 增加数据源
+
+在左侧菜单点击 `Data sources`, 本项目已经预置了名为 `doris` 的数据源，如果想添加自己的 Doris 集群作为数据源，点击 `Add new data source` 增加数据源
+
+![enable-plugin](./static/datasource.png)
+
+
+输入 mysql 查找到 `MySQL` 类型的数据源
+
+![enable-plugin](./static/filter-mysql-datasource.png)
+
+
+填写 Host、Username、Password 等连接信息后点击 `Save & test` 保存你的数据源，在使用插件时将会出现数据源选择。
 
 ![enable-plugin](./static/add-datasource.png)
 
