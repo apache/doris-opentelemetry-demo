@@ -13,12 +13,13 @@
 /* harmony import */ var _grafana_runtime__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2007);
 /* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var jotai__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(3689);
+/* harmony import */ var jotai__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(3689);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5959);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _services_discover__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(7626);
 /* harmony import */ var _store_discover__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(6247);
-/* harmony import */ var _utils_data__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(6700);
+/* harmony import */ var _store_traces__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(3982);
+/* harmony import */ var _utils_data__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(6700);
 function _define_property(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {
@@ -55,13 +56,14 @@ function _object_spread(target) {
 
 
 
+
 function TraceDetail(props) {
-    const currentTable = (0,jotai__WEBPACK_IMPORTED_MODULE_7__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .currentTableAtom */ .$w);
-    const currentCatalog = (0,jotai__WEBPACK_IMPORTED_MODULE_7__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .currentCatalogAtom */ .K0);
-    const currentDatabase = (0,jotai__WEBPACK_IMPORTED_MODULE_7__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .currentDatabaseAtom */ .Cf);
-    const [traceData, setTraceData] = (0,jotai__WEBPACK_IMPORTED_MODULE_7__/* .useAtom */ .fp)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .tableTracesDataAtom */ .UB);
-    const selectedRow = (0,jotai__WEBPACK_IMPORTED_MODULE_7__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .selectedRowAtom */ .nn);
-    const selectdbDS = (0,jotai__WEBPACK_IMPORTED_MODULE_7__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .selectedDatasourceAtom */ .SW);
+    const currentTable = (0,jotai__WEBPACK_IMPORTED_MODULE_8__/* .useAtomValue */ .md)(_store_traces__WEBPACK_IMPORTED_MODULE_6__/* .currentTraceTableAtom */ .AZ);
+    const currentCatalog = (0,jotai__WEBPACK_IMPORTED_MODULE_8__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .currentCatalogAtom */ .K0);
+    const currentDatabase = (0,jotai__WEBPACK_IMPORTED_MODULE_8__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .currentDatabaseAtom */ .Cf);
+    const [traceData, setTraceData] = (0,jotai__WEBPACK_IMPORTED_MODULE_8__/* .useAtom */ .fp)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .tableTracesDataAtom */ .UB);
+    const selectedRow = (0,jotai__WEBPACK_IMPORTED_MODULE_8__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .selectedRowAtom */ .nn);
+    const selectdbDS = (0,jotai__WEBPACK_IMPORTED_MODULE_8__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .selectedDatasourceAtom */ .SW);
     const { open, traceId } = props;
     const getTraceData = react__WEBPACK_IMPORTED_MODULE_3___default().useCallback(()=>{
         let payload = {
@@ -77,7 +79,7 @@ function TraceDetail(props) {
         }, payload)).subscribe({
             next: ({ data, ok })=>{
                 if (ok) {
-                    const formatedData = (0,_utils_data__WEBPACK_IMPORTED_MODULE_6__/* .formatTracesResData */ .O1)(data);
+                    const formatedData = (0,_utils_data__WEBPACK_IMPORTED_MODULE_7__/* .formatTracesResData */ .O1)(data);
                     setTraceData(formatedData);
                 }
             },
@@ -135,6 +137,39 @@ function TraceDetail(props) {
         }
     }) : null));
 }
+
+
+/***/ }),
+
+/***/ 3982:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   AZ: () => (/* binding */ currentTraceTableAtom),
+/* harmony export */   E: () => (/* binding */ tracesServicesAtom),
+/* harmony export */   VA: () => (/* binding */ traceOperationsAtom),
+/* harmony export */   fy: () => (/* binding */ currentSortAtom),
+/* harmony export */   gL: () => (/* binding */ currentServiceAtom),
+/* harmony export */   jB: () => (/* binding */ tagsAtom),
+/* harmony export */   mH: () => (/* binding */ currentOperationAtom),
+/* harmony export */   oC: () => (/* binding */ minDurationAtom),
+/* harmony export */   ok: () => (/* binding */ tracesAtom),
+/* harmony export */   uS: () => (/* binding */ maxDurationAtom)
+/* harmony export */ });
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2351);
+/* harmony import */ var jotai__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4945);
+
+
+const currentTraceTableAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('');
+const currentServiceAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)(_constants__WEBPACK_IMPORTED_MODULE_0__/* .DEFAULT_SERVICE */ .aR);
+const currentOperationAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)(_constants__WEBPACK_IMPORTED_MODULE_0__/* .DEFAULT_OPERATION */ .UB);
+const currentSortAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('most-recent');
+const tagsAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('');
+const tracesAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)([]);
+const tracesServicesAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)([]);
+const traceOperationsAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)([]);
+const minDurationAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('');
+const maxDurationAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('');
 
 
 /***/ }),
@@ -1462,4 +1497,4 @@ function getIndexesService({ selectdbDS, database, table }) {
 /***/ })
 
 }]);
-//# sourceMappingURL=181.js.map?_cache=ce826c664576171bad6c
+//# sourceMappingURL=181.js.map?_cache=6d914ab9f7dffb39d3ea

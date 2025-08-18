@@ -17,7 +17,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const Discover = /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_0___default().lazy(()=>Promise.all(/* import() */[__webpack_require__.e(632), __webpack_require__.e(723), __webpack_require__.e(181), __webpack_require__.e(892)]).then(__webpack_require__.bind(__webpack_require__, 9892)));
-const PageTrace = /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_0___default().lazy(()=>Promise.all(/* import() */[__webpack_require__.e(632), __webpack_require__.e(181), __webpack_require__.e(906)]).then(__webpack_require__.bind(__webpack_require__, 906)));
+const PageTrace = /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_0___default().lazy(()=>Promise.all(/* import() */[__webpack_require__.e(632), __webpack_require__.e(181), __webpack_require__.e(600)]).then(__webpack_require__.bind(__webpack_require__, 2600)));
 // const PageDashboard = React.lazy(() => import('../../pages/PageDashboard'));
 function App(_props) {
     return /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Routes, null, /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
@@ -308,4 +308,4 @@ function translationDateIntervalType(type) {
 /***/ })
 
 }]);
-//# sourceMappingURL=462.js.map?_cache=5440070870454b81ce34
+//# sourceMappingURL=462.js.map?_cache=f147cca08cc3ed76dfe3
