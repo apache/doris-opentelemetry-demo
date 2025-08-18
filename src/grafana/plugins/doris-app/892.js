@@ -4762,6 +4762,9 @@ function PageDiscover() {
     }
     function getTableDataCount() {
         var _currentDate_;
+        if (!currentTable || !currentDatabase || !selectdbDS) {
+            return;
+        }
         const timeInterval = interval === constants/* IntervalEnum */.Bg.Auto ? (0,constants/* getAutoInterval */.Vy)(currentDate).interval_unit : interval;
         const timeIntervalValue = interval === constants/* IntervalEnum */.Bg.Auto ? (0,constants/* getAutoInterval */.Vy)(currentDate).interval_value : 1;
         const indexesStatement = (0,utils_data/* getIndexesStatement */.cE)(currentIndexes, tableFields, searchValue);
@@ -4936,4 +4939,4 @@ function PageDiscover() {
 /***/ })
 
 }]);
-//# sourceMappingURL=892.js.map?_cache=82e6050ef02993d795d5
+//# sourceMappingURL=892.js.map?_cache=320114a5eb201b6077e7
