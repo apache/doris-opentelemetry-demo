@@ -4,3 +4,4 @@
 
 gradlew text eol=lf
 src/grafana/plugins/doris-app/*.js -text
+src/grafana/plugins/doris-app/*.map -text

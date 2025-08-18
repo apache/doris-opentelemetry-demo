@@ -19,20 +19,22 @@
         },
         "screenshots": [],
         "version": "1.0.0",
-        "updated": "2025-08-15"
+        "updated": "2025-08-18"
     },
     "includes": [
         {
             "type": "page",
             "name": "Discover",
             "path": "/a/doris-app/discover",
-            "addToNav": true
+            "addToNav": true,
+            "defaultNav": false
         },
         {
             "type": "page",
             "name": "Traces",
             "path": "/a/doris-app/traces",
-            "addToNav": true
+            "addToNav": true,
+            "defaultNav": false
         },
         {
             "type": "page",
@@ -47,8 +49,5 @@
         "grafanaDependency": ">=10.4.0",
         "plugins": []
     },
-    "css": [
-        "styles/tailwind.css"
-    ],
     "buildMode": "production"
 }
