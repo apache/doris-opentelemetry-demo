@@ -3026,28 +3026,80 @@ function _async_to_generator(fn) {
         });
     };
 }
+function utils_define_property(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
+function utils_object_spread(target) {
+    for(var i = 1; i < arguments.length; i++){
+        var source = arguments[i] != null ? arguments[i] : {};
+        var ownKeys = Object.keys(source);
+        if (typeof Object.getOwnPropertySymbols === "function") {
+            ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function(sym) {
+                return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+            }));
+        }
+        ownKeys.forEach(function(key) {
+            utils_define_property(target, key, source[key]);
+        });
+    }
+    return target;
+}
+function utils_ownKeys(object, enumerableOnly) {
+    var keys = Object.keys(object);
+    if (Object.getOwnPropertySymbols) {
+        var symbols = Object.getOwnPropertySymbols(object);
+        if (enumerableOnly) {
+            symbols = symbols.filter(function(sym) {
+                return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+            });
+        }
+        keys.push.apply(keys, symbols);
+    }
+    return keys;
+}
+function utils_object_spread_props(target, source) {
+    source = source != null ? source : {};
+    if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+        utils_ownKeys(Object(source)).forEach(function(key) {
+            Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+    }
+    return target;
+}
 function generateUid(obj) {
     return _async_to_generator(function*() {
-        // 将对象排序后转换为 JSON 字符串，以确保属性顺序不影响哈希结果
+        // 确保属性排序一致
         const jsonString = JSON.stringify(obj, Object.keys(obj).sort());
         // 编码为 UTF-8
-        const encoder = new TextEncoder();
-        const data = encoder.encode(jsonString);
-        // 计算 SHA-256 哈希值
-        const hashBuffer = yield crypto.subtle.digest('SHA-256', data);
-        // 将哈希值转换为十六进制字符串
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const hashHex = hashArray.map((b)=>b.toString(16).padStart(2, '0')).join('');
-        return hashHex;
+        const data = new TextEncoder().encode(jsonString);
+        // 显式使用浏览器的 crypto.subtle
+        const hashBuffer = yield window.crypto.subtle.digest('SHA-256', data);
+        // 转 hex
+        return Array.from(new Uint8Array(hashBuffer)).map((b)=>b.toString(16).padStart(2, '0')).join('');
     })();
 }
 function generateTableDataUID(items) {
     return _async_to_generator(function*() {
-        for (let item of items){
+        const result = [];
+        for (const item of items){
             const uid = yield generateUid(item._original);
-            item['_uid'] = uid;
+            result.push(utils_object_spread_props(utils_object_spread({}, item), {
+                _uid: uid
+            }));
         }
-        return items;
+        return result;
     })();
 }
 
@@ -4688,4 +4740,4 @@ function PageDiscover() {
 /***/ })
 
 }]);
-//# sourceMappingURL=892.js.map?_cache=aeeb41a05e6bcc1f2772
+//# sourceMappingURL=892.js.map?_cache=24dff9e638b25a5f1233
