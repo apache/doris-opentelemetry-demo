@@ -403,46 +403,55 @@ var trace_detail = __webpack_require__(1885);
 
 
 
-const TraceView = (props)=>{
-    var _props_traces_;
+const TraceView = ({ traces: propTraces, onSortByChange })=>{
+    var _propTraces_;
     const theme = (0,ui_.useTheme2)();
     const [page, setPage] = (0,react/* useAtom */.fp)(discover/* pageAtom */.fs);
     const pageSize = (0,react/* useAtomValue */.md)(discover/* pageSizeAtom */.Ol);
-    const total = ((_props_traces_ = props.traces[0]) === null || _props_traces_ === void 0 ? void 0 : _props_traces_.total) || 0;
-    const traces = props.traces || [];
+    const total = ((_propTraces_ = propTraces[0]) === null || _propTraces_ === void 0 ? void 0 : _propTraces_.total) || 0;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const traces = propTraces || [];
     const [sort, setSort] = (0,react/* useAtom */.fp)(store_traces/* currentSortAtom */.fy);
     const [drawerOpen, setDrawerOpen] = external_react_default().useState(false);
     const [traceId, setTraceId] = external_react_default().useState('');
-    const getOption = ()=>{
+    // 预处理 series 数据，计算 symbolSize
+    const seriesData = (0,external_react_.useMemo)(()=>{
+        return traces.map((s)=>({
+                name: `${s.root_service}:${s.operation}`,
+                spans: s.spans,
+                value: s.trace_duration_ms,
+                trace_id: s.trace_id,
+                symbolSize: Math.max(12, Math.min(30, s.spans || 1))
+            }));
+    }, [
+        traces
+    ]);
+    const option = (0,external_react_.useMemo)(()=>{
         return {
             tooltip: {
                 trigger: 'item',
                 padding: 0,
                 borderWidth: 0,
                 backgroundColor: theme.isLight ? '#ffffff' : 'rgba(63, 63, 69, 0.64)',
-                onClick: (params)=>{
-                    setTraceId(params.data.trace_id);
-                    setDrawerOpen(true);
-                },
                 formatter: function(params) {
                     const html = `<div
-                                       style="
-                                          padding: 8px;
-                                          min-width: 120px;
-                                          border-radius: 6px;
-                                          backdrop-filter: blur(12px);
-                                          color: ${theme.isLight ? '#1F1F26' : '#EFEFF0'};
-                                        ">
-                                      <div style="padding-bottom: 4px; border-bottom: 1px solid ${theme.isLight ? '#DFDFE0' : '#3F3F45'};">${[
+                       style="
+                          padding: 8px;
+                          min-width: 120px;
+                          border-radius: 6px;
+                          backdrop-filter: blur(12px);
+                          color: ${theme.isLight ? '#1F1F26' : '#EFEFF0'};
+                        ">
+                      <div style="padding-bottom: 4px; border-bottom: 1px solid ${theme.isLight ? '#DFDFE0' : '#3F3F45'};">${[
                         params.name
                     ]}</div>
-                                      <div style="padding-top:4px;display: flex;justify-content: space-between;"><span>Durations：</span><span style="font-family:DIN Alternate;font-size:14;font-weight:500;">${[
+                      <div style="padding-top:4px;display: flex;justify-content: space-between;"><span>Durations：</span><span style="font-family:DIN Alternate;font-size:14;font-weight:500;">${[
                         `${params.value} ms` || 'No Data'
                     ]}</span></div>
-                                      <div style="padding-top:4px;display: flex;justify-content: space-between;"><span>Spans：</span><span style="font-family:DIN Alternate;font-size:14;font-weight:500;">${[
+                      <div style="padding-top:4px;display: flex;justify-content: space-between;"><span>Spans：</span><span style="font-family:DIN Alternate;font-size:14;font-weight:500;">${[
                         params.data.spans || 'No Data'
                     ]}</span></div>
-                                  </div>`;
+                  </div>`;
                     return html;
                 }
             },
@@ -452,10 +461,6 @@ const TraceView = (props)=>{
                 data: traces.map((s)=>s.time),
                 axisLabel: {
                     color: theme.colors.text.primary
-                },
-                axisLine: {
-                    lineStyle: {
-                    }
                 }
             },
             yAxis: {
@@ -472,24 +477,17 @@ const TraceView = (props)=>{
             },
             series: [
                 {
-                    symbolSize: (value, params)=>{
-                        // 使用 spans 数量决定点的大小，设一个基本缩放，例如：
-                        const trace = traces[params.dataIndex];
-                        return Math.max(12, Math.min(30, trace.spans || 1)); // 控制在6~30之间
-                    },
-                    data: traces.map((s)=>{
-                        return {
-                            name: `${s.root_service}:${s.operation}`,
-                            spans: s.spans,
-                            value: s.trace_duration_ms,
-                            trace_id: s.trace_id
-                        };
-                    }),
-                    type: 'scatter'
+                    type: 'scatter',
+                    data: seriesData,
+                    symbolSize: (data)=>data.symbolSize
                 }
             ]
         };
-    };
+    }, [
+        seriesData,
+        traces,
+        theme
+    ]);
     const onEvents = {
         click: (params)=>{
             setTraceId(params.data.trace_id);
@@ -510,8 +508,8 @@ const TraceView = (props)=>{
                     height: 300px;
                 `
     }, /*#__PURE__*/ external_react_default().createElement(esm/* default */.A, {
-        option: getOption(),
-        notMerge: true,
+        option: option,
+        notMerge: false,
         lazyUpdate: true,
         style: {
             height: '100%'
@@ -556,7 +554,7 @@ const TraceView = (props)=>{
         onChange: (option)=>{
             setPage(1);
             setSort(option.value);
-            props === null || props === void 0 ? void 0 : props.onSortByChange(option.value);
+            onSortByChange(option.value);
         }
     }))), /*#__PURE__*/ external_react_default().createElement("div", {
         className: (0,css_.css)`
@@ -574,10 +572,8 @@ const TraceView = (props)=>{
                     `
     }, /*#__PURE__*/ external_react_default().createElement("div", null, traces.length, " Traces, "), /*#__PURE__*/ external_react_default().createElement("div", null, "Total ", total)), /*#__PURE__*/ external_react_default().createElement(ui_.Pagination, {
         currentPage: page,
-        numberOfPages: Math.floor(total / pageSize) || 1,
-        onNavigate: (toPage)=>{
-            setPage(toPage);
-        }
+        numberOfPages: Math.ceil(total / pageSize) || 1,
+        onNavigate: (toPage)=>setPage(toPage)
     })), /*#__PURE__*/ external_react_default().createElement("div", {
         className: (0,css_.css)`
                     display: flex;
@@ -662,6 +658,8 @@ var utils_data = __webpack_require__(6700);
 var constants = __webpack_require__(2351);
 // EXTERNAL MODULE: ./services/metaservice.ts
 var metaservice = __webpack_require__(8161);
+// EXTERNAL MODULE: external "@grafana/data"
+var data_ = __webpack_require__(7781);
 ;// ./components/traces/traces-header/index.tsx
 'use client';
 function _define_property(obj, key, value) {
@@ -728,16 +726,17 @@ function _object_spread_props(target, source) {
 
 
 
+
 function TracesHeader() {
     // const catalogs = useAtomValue(catalogAtom);
     const setIndexes = (0,react/* useSetAtom */.Xr)(discover/* indexesAtom */.Eq);
     const [discoverCurrent, setDiscoverCurrent] = (0,react/* useAtom */.fp)(discover/* discoverCurrentAtom */.WN);
     if (false) // removed by dead control flow
 {}
-    const [loc, setLoc] = (0,react/* useAtom */.fp)(discover/* locationAtom */.JT);
+    const setLoc = (0,react/* useSetAtom */.Xr)(discover/* locationAtom */.JT);
     const setTableFields = (0,react/* useSetAtom */.Xr)(discover/* tableFieldsAtom */.D_);
     const [timeFields, setTimeFields] = (0,react/* useAtom */.fp)(discover/* timeFieldsAtom */.Gg);
-    const [currentDate, setCurrentDate] = (0,react/* useAtom */.fp)(discover/* currentDateAtom */.Zb);
+    const [_currentDate, setCurrentDate] = (0,react/* useAtom */.fp)(discover/* currentDateAtom */.Zb);
     const currentTimeField = (0,react/* useAtomValue */.md)(discover/* currentTimeFieldAtom */.CA);
     const [currentIndex, setCurrentIndex] = (0,react/* useAtom */.fp)(discover/* currentIndexAtom */.TY);
     const searchFocus = (0,react/* useAtomValue */.md)(discover/* searchFocusAtom */.MM);
@@ -746,7 +745,7 @@ function TracesHeader() {
     const [currentTable, setCurrentTable] = (0,react/* useAtom */.fp)(store_traces/* currentTraceTableAtom */.AZ);
     const [databases, setDatabases] = (0,react/* useAtom */.fp)(discover/* databasesAtom */.SK);
     const [tables, setTables] = (0,react/* useAtom */.fp)(discover/* tablesAtom */.b9);
-    const [datasources, setDataSource] = (0,react/* useAtom */.fp)(discover/* datasourcesAtom */.ui);
+    const [_datasources, setDataSource] = (0,react/* useAtom */.fp)(discover/* datasourcesAtom */.ui);
     const setDisabledOptions = (0,react/* useSetAtom */.Xr)(discover/* disabledOptionsAtom */.IH);
     const selectdbDS = (0,react/* useAtomValue */.md)(discover/* selectedDatasourceAtom */.SW);
     (0,external_react_.useEffect)(()=>{
@@ -769,38 +768,29 @@ function TracesHeader() {
     ]);
     const theme = (0,ui_.useTheme2)();
     (0,external_react_.useEffect)(()=>{
-        if (selectdbDS) {
-            const res = (0,metaservice/* getDatabases */.Hm)(selectdbDS);
-            res.subscribe({
-                next: ({ data, ok })=>{
-                    if (ok) {
-                        var _data_results__data, _data_results_;
-                        const value = data === null || data === void 0 ? void 0 : (_data_results_ = data.results[0]) === null || _data_results_ === void 0 ? void 0 : (_data_results__data = _data_results_.data) === null || _data_results__data === void 0 ? void 0 : _data_results__data.values[0];
-                        if (value) {
-                            const options = value.map((item)=>{
-                                return {
-                                    label: item,
-                                    value: item
-                                };
-                            });
-                            setDatabases(options);
-                        }
-                    }
-                },
-                error: (err)=>{
-                    console.log('查询错误', err);
-                }
-            });
+        if (!selectdbDS) {
+            return;
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        const subscription = (0,metaservice/* getDatabases */.Hm)(selectdbDS).subscribe({
+            next: (resp)=>{
+                const { data, ok } = resp;
+                if (ok) {
+                    const frame = (0,data_.toDataFrame)(data.results.getDatabases.frames[0]);
+                    const values = Array.from(frame.fields[0].values);
+                    const options = values.map((item)=>({
+                            label: item,
+                            value: item
+                        }));
+                    setDatabases(options);
+                }
+            },
+            error: (err)=>console.log('查询错误', err)
+        });
+        return ()=>subscription.unsubscribe();
     }, [
-        selectdbDS
+        selectdbDS,
+        setDatabases
     ]);
-    // useEffect(() => {
-    //     if (startTime && endTime) {
-    //         setCurrentDate([dayjs(startTime), dayjs(endTime)]);
-    //     }
-    // }, [startTime, endTime, setCurrentDate]);
     function getFields(selectedTable) {
         (0,metaservice/* getFieldsService */.H1)({
             selectdbDS,
@@ -809,10 +799,11 @@ function TracesHeader() {
         }).subscribe({
             next: ({ data, ok })=>{
                 if (ok) {
-                    var _data_results__data, _data_results_, _data_results__data1, _data_results_1, _data_results__data2, _data_results_2;
-                    const value = data === null || data === void 0 ? void 0 : (_data_results_ = data.results[0]) === null || _data_results_ === void 0 ? void 0 : (_data_results__data = _data_results_.data) === null || _data_results__data === void 0 ? void 0 : _data_results__data.values[0];
-                    const fieldTypes = data === null || data === void 0 ? void 0 : (_data_results_1 = data.results[0]) === null || _data_results_1 === void 0 ? void 0 : (_data_results__data1 = _data_results_1.data) === null || _data_results__data1 === void 0 ? void 0 : _data_results__data1.values[1];
-                    const tableFields = data === null || data === void 0 ? void 0 : (_data_results_2 = data.results[0]) === null || _data_results_2 === void 0 ? void 0 : (_data_results__data2 = _data_results_2.data) === null || _data_results__data2 === void 0 ? void 0 : _data_results__data2.values[0].map((item, index)=>{
+                    const frame = (0,data_.toDataFrame)(data.results.getFields.frames[0]);
+                    console.log('frame', frame);
+                    const values = Array.from(frame.fields[0].values);
+                    const fieldTypes = Array.from(frame.fields[1].values);
+                    const tableFields = values.map((item, index)=>{
                         return {
                             label: item,
                             Field: item,
@@ -821,9 +812,9 @@ function TracesHeader() {
                         };
                     });
                     setTableFields(tableFields);
-                    if (value) {
+                    if (values) {
                         var _options_;
-                        const options = value.filter((field, index)=>{
+                        const options = values.filter((field, index)=>{
                             return (0,utils_data/* isValidTimeFieldType */.Q3)(fieldTypes[index].toUpperCase());
                         }).map((item)=>{
                             return {
@@ -851,16 +842,16 @@ function TracesHeader() {
         }).subscribe({
             next: ({ data, ok })=>{
                 if (ok) {
-                    var _data_results__data, _data_results_, _data_results__data1, _data_results_1, _data_results__data2, _data_results_2;
-                    const value = data === null || data === void 0 ? void 0 : (_data_results_ = data.results[0]) === null || _data_results_ === void 0 ? void 0 : (_data_results__data = _data_results_.data) === null || _data_results__data === void 0 ? void 0 : _data_results__data.values[2];
-                    const columnNames = data === null || data === void 0 ? void 0 : (_data_results_1 = data.results[0]) === null || _data_results_1 === void 0 ? void 0 : (_data_results__data1 = _data_results_1.data) === null || _data_results__data1 === void 0 ? void 0 : _data_results__data1.values[4];
-                    const indexesTypes = data === null || data === void 0 ? void 0 : (_data_results_2 = data.results[0]) === null || _data_results_2 === void 0 ? void 0 : (_data_results__data2 = _data_results_2.data) === null || _data_results__data2 === void 0 ? void 0 : _data_results__data2.values[10];
-                    if (!value || value.length === 0) {
+                    const frame = (0,data_.toDataFrame)(data.results.getIndexes.frames[0]);
+                    const values = Array.from(frame.fields[2].values);
+                    const columnNames = Array.from(frame.fields[4].values);
+                    const indexesTypes = Array.from(frame.fields[10].values);
+                    if (!values || values.length === 0) {
                         setIndexes([]);
                         setCurrentIndex([]);
                         return;
                     }
-                    const tableIndexes = value === null || value === void 0 ? void 0 : value.map((item, index)=>{
+                    const tableIndexes = values === null || values === void 0 ? void 0 : values.map((item, index)=>{
                         return {
                             label: item,
                             value: item,
@@ -914,28 +905,23 @@ function TracesHeader() {
             setDiscoverCurrent(_object_spread_props(_object_spread({}, discoverCurrent), {
                 database: selectedDatabase.value
             }));
-            (0,metaservice/* getTables */.oI)({
+            (0,metaservice/* getTablesService */.Rw)({
                 selectdbDS,
                 database: selectedDatabase.value
             }).subscribe({
-                next: ({ data, ok })=>{
+                next: (resp)=>{
+                    const { data, ok } = resp;
                     if (ok) {
-                        var _data_results__data, _data_results_;
-                        const value = data === null || data === void 0 ? void 0 : (_data_results_ = data.results[0]) === null || _data_results_ === void 0 ? void 0 : (_data_results__data = _data_results_.data) === null || _data_results__data === void 0 ? void 0 : _data_results__data.values[0];
-                        if (value) {
-                            const options = value.map((item)=>{
-                                return {
-                                    label: item,
-                                    value: item
-                                };
-                            });
-                            setTables(options);
-                        }
+                        const frame = (0,data_.toDataFrame)(data.results.getTables.frames[0]);
+                        const values = Array.from(frame.fields[0].values);
+                        const options = values.map((item)=>({
+                                label: item,
+                                value: item
+                            }));
+                        setTables(options);
                     }
                 },
-                error: (err)=>{
-                    console.log('查询错误', err);
-                }
+                error: (err)=>console.log('查询错误', err)
             });
         }
     })), /*#__PURE__*/ external_react_default().createElement(ui_.Field, {
@@ -956,7 +942,7 @@ function TracesHeader() {
             getIndexes(selectedTable);
         }
     }))), !searchFocus && /*#__PURE__*/ external_react_default().createElement((external_react_default()).Fragment, null, /*#__PURE__*/ external_react_default().createElement(ui_.Field, {
-        label: "时间字段"
+        label: "Time Field"
     }, /*#__PURE__*/ external_react_default().createElement(ui_.Select, {
         value: currentTimeField,
         options: timeFields,
@@ -972,9 +958,9 @@ function TracesHeader() {
                 });
             });
         },
-        placeholder: '时间字段'
+        placeholder: 'Time Field'
     })), /*#__PURE__*/ external_react_default().createElement(ui_.Field, {
-        label: "时间范围",
+        label: "Time Range",
         style: {
             marginLeft: 8,
             marginRight: 8
@@ -1002,8 +988,8 @@ function TracesHeader() {
     }))));
 }
 
-// EXTERNAL MODULE: ./services/discover.ts
-var services_discover = __webpack_require__(7626);
+// EXTERNAL MODULE: ./services/traces.ts + 1 modules
+var services_traces = __webpack_require__(3764);
 ;// ./pages/PageTrace.tsx
 function PageTrace_define_property(obj, key, value) {
     if (key in obj) {
@@ -1070,6 +1056,7 @@ function PageTrace_object_spread_props(target, source) {
 
 
 
+
 function PageTrace() {
     const theme = (0,ui_.useTheme2)();
     const currentTimeField = (0,react/* useAtomValue */.md)(discover/* currentTimeFieldAtom */.CA);
@@ -1108,7 +1095,7 @@ function PageTrace() {
             page_size: pageSize,
             service_name: currentService.value,
             operation: currentOperation.value,
-            sort_by: sort
+            sortBy: sort
         };
         if (minDuration) {
             console.log('minDuration', minDuration);
@@ -1121,13 +1108,13 @@ function PageTrace() {
         if (tags && tags.length > 0) {
             payload.tags = tags;
         }
-        (0,services_discover/* getTracesService */.Cy)(PageTrace_object_spread({
+        (0,services_traces/* getTracesService */.Cy)(PageTrace_object_spread({
             selectdbDS
         }, payload)).subscribe({
             next: ({ data, ok })=>{
                 setLoading(false);
                 if (ok) {
-                    const rowsData = (0,utils_data/* convertColumnToRow */.HL)(data);
+                    const rowsData = (0,utils_data/* convertColumnToRow */.HL)(data.results.getTraces.frames[0]);
                     // console.log('查询结果', rowsData);
                     const formateData = rowsData.map((item)=>{
                         var _item_trace_duration_ms;
@@ -1174,27 +1161,25 @@ function PageTrace() {
             endDate: currentDate[1].format(constants/* FORMAT_DATE */.fU),
             cluster: ''
         };
-        (0,services_discover/* getTracesServicesService */.Cq)(PageTrace_object_spread({
+        (0,services_traces/* getServiceListService */.FC)(PageTrace_object_spread({
             selectdbDS
         }, payload)).subscribe({
             next: ({ data, ok })=>{
                 setLoading(false);
                 if (ok) {
-                    if (ok) {
-                        var _data_results__data, _data_results_;
-                        const value = data === null || data === void 0 ? void 0 : (_data_results_ = data.results[0]) === null || _data_results_ === void 0 ? void 0 : (_data_results__data = _data_results_.data) === null || _data_results__data === void 0 ? void 0 : _data_results__data.values[0];
-                        if (value) {
-                            const options = value.map((item)=>{
-                                return {
-                                    label: item,
-                                    value: item
-                                };
-                            });
-                            setTracesServices([
-                                constants/* DEFAULT_SERVICE */.aR,
-                                ...options
-                            ]);
-                        }
+                    const frame = (0,data_.toDataFrame)(data.results.getServiceList.frames[0]);
+                    const values = Array.from(frame.fields[0].values);
+                    if (values) {
+                        const options = values.map((item)=>{
+                            return {
+                                label: item,
+                                value: item
+                            };
+                        });
+                        setTracesServices([
+                            constants/* DEFAULT_SERVICE */.aR,
+                            ...options
+                        ]);
                     }
                 }
             },
@@ -1221,34 +1206,34 @@ function PageTrace() {
             timeField: currentTimeField,
             startDate: (_currentDate_ = currentDate[0]) === null || _currentDate_ === void 0 ? void 0 : _currentDate_.format(constants/* FORMAT_DATE */.fU),
             endDate: currentDate[1].format(constants/* FORMAT_DATE */.fU),
-            serviceName: currentService.value,
+            service_name: currentService.value,
             cluster: ''
         };
-        (0,services_discover/* getTraceOperationsService */.H7)(PageTrace_object_spread({
+        (0,services_traces/* getOperationListService */.jo)(PageTrace_object_spread({
             selectdbDS
         }, payload)).subscribe({
             next: ({ data, ok })=>{
                 setLoading(false);
                 if (ok) {
-                    if (ok) {
-                        var _data_results__data, _data_results_;
-                        const value = data === null || data === void 0 ? void 0 : (_data_results_ = data.results[0]) === null || _data_results_ === void 0 ? void 0 : (_data_results__data = _data_results_.data) === null || _data_results__data === void 0 ? void 0 : _data_results__data.values[0];
-                        if (value) {
-                            const options = value.map((item)=>{
-                                return {
-                                    label: item,
-                                    value: item
-                                };
-                            });
-                            setTraceOperations([
-                                constants/* DEFAULT_OPERATION */.UB,
-                                ...options
-                            ]);
-                        } else {
-                            setTraceOperations([
-                                constants/* DEFAULT_OPERATION */.UB
-                            ]);
-                        }
+                    // const frame = toDataFrame(data.results.getOperationList.frames[0]);
+                    // const values = Array.from(frame.fields[0].values);
+                    // const values = frame.data.values
+                    const values = data.results.getOperationList.frames[0].data.values[0];
+                    if (values) {
+                        const options = values.map((item)=>{
+                            return {
+                                label: item,
+                                value: item
+                            };
+                        });
+                        setTraceOperations([
+                            constants/* DEFAULT_OPERATION */.UB,
+                            ...options
+                        ]);
+                    } else {
+                        setTraceOperations([
+                            constants/* DEFAULT_OPERATION */.UB
+                        ]);
                     }
                 }
             },
@@ -1271,12 +1256,21 @@ function PageTrace() {
     (0,external_react_.useEffect)(()=>{
         if (currentTimeField && currentTable && currentCatalog && currentDatabase && currentDate) {
             getTraces();
-            getTracesServices();
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         page,
         pageSize,
+        currentTimeField,
+        currentDate,
+        sort
+    ]);
+    (0,external_react_.useEffect)(()=>{
+        if (currentTimeField && currentTable && currentCatalog && currentDatabase && currentDate) {
+            getTracesServices();
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
         currentTimeField,
         currentDate,
         sort
@@ -1349,4 +1343,4 @@ function PageTrace() {
 /***/ })
 
 }]);
-//# sourceMappingURL=600.js.map?_cache=ec61aa919838c06e8070
+//# sourceMappingURL=600.js.map?_cache=da9ca1a564051d04d4f3
