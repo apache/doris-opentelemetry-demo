@@ -19,7 +19,7 @@
         },
         "screenshots": [],
         "version": "1.0.0",
-        "updated": "2025-09-04"
+        "updated": "2025-10-28"
     },
     "includes": [
         {
@@ -49,5 +49,5 @@
         "grafanaDependency": ">=10.4.0",
         "plugins": []
     },
-    "buildMode": "production"
+    "buildMode": "development"
 }
