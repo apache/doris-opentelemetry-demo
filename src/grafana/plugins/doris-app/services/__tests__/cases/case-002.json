@@ -1,0 +1,18 @@
+{
+    "name": "Field match",
+    "lucene": "service_name:kafka",
+    "expectedSql": "SELECT * FROM `logs`.`otel_traces` WHERE (service_name MATCH_ANY 'kafka')",
+    "databaseName": "logs",
+    "tableName": "otel_traces",
+    "connectionId": "conn-1",
+    "datasourceType": "mysql",
+    "columns": {
+        "service_name": {
+            "name": "service_name",
+            "normalizedType": "String",
+            "dataType": "varchar",
+            "columnType": "varchar(255)"
+        }
+    },
+    "invertedIndexColumns": ["service_name"]
+}

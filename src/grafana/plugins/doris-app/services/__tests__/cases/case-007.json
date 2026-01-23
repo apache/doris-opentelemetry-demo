@@ -1,0 +1,25 @@
+{
+    "name": "Negation2",
+    "lucene": "-kafka",
+    "expectedSql": "SELECT * FROM `logs`.`otel_traces` WHERE (NOT ((`service_name` MATCH_ANY 'kafka') OR (`scope_name` MATCH_ANY 'kafka')))",
+    "databaseName": "logs",
+    "tableName": "otel_traces",
+    "connectionId": "conn-1",
+    "datasourceType": "mysql",
+    "implicitColumnExpression": "coalesce(`service_name`, ''), coalesce(`scope_name`, '')",
+    "columns": {
+        "service_name": {
+            "name": "service_name",
+            "normalizedType": "String",
+            "dataType": "varchar",
+            "columnType": "varchar(255)"
+        },
+        "scope_name": {
+            "name": "scope_name",
+            "normalizedType": "String",
+            "dataType": "varchar",
+            "columnType": "varchar(255)"
+        }
+    },
+    "invertedIndexColumns": ["service_name", "scope_name"]
+}

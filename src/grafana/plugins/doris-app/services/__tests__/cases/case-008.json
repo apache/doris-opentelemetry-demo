@@ -1,0 +1,24 @@
+{
+    "name": "Grouping",
+    "lucene": "(service_name:kafka OR service_name:zookeeper) AND status:failed",
+    "expectedSql": "SELECT * FROM `logs`.`otel_traces` WHERE ((service_name MATCH_ANY 'kafka') OR (service_name MATCH_ANY 'zookeeper')) AND (status MATCH_ANY 'failed')",
+    "databaseName": "logs",
+    "tableName": "otel_traces",
+    "connectionId": "conn-1",
+    "datasourceType": "mysql",
+    "columns": {
+        "service_name": {
+            "name": "service_name",
+            "normalizedType": "String",
+            "dataType": "varchar",
+            "columnType": "varchar(255)"
+        },
+        "status": {
+            "name": "status",
+            "normalizedType": "String",
+            "dataType": "varchar",
+            "columnType": "varchar(255)"
+        }
+    },
+    "invertedIndexColumns": ["service_name", "status"]
+}

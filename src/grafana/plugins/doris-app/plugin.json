@@ -3,7 +3,7 @@
     "type": "app",
     "name": "Doris App",
     "id": "doris-app",
-    "backend": true,
+    "backend": false,
     "executable": "gpx_doris-app",
     "info": {
         "keywords": [
@@ -19,7 +19,7 @@
         },
         "screenshots": [],
         "version": "1.0.0",
-        "updated": "2025-10-28"
+        "updated": "2026-01-23"
     },
     "includes": [
         {
@@ -49,5 +49,5 @@
         "grafanaDependency": ">=10.4.0",
         "plugins": []
     },
-    "buildMode": "buildMode"
+    "buildMode": "production"
 }

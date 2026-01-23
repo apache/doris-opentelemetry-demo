@@ -1,0 +1,18 @@
+{
+    "name": "Numeric greater than",
+    "lucene": "duration:>500",
+    "expectedSql": "SELECT * FROM `logs`.`otel_traces` WHERE (duration > '500')",
+    "databaseName": "logs",
+    "tableName": "otel_traces",
+    "connectionId": "conn-1",
+    "datasourceType": "mysql",
+    "columns": {
+        "duration": {
+            "name": "duration",
+            "normalizedType": "Float64",
+            "dataType": "Float64",
+            "columnType": "Float64"
+        }
+    },
+    "invertedIndexColumns": []
+}

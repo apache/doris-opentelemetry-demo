@@ -1,0 +1,18 @@
+{
+    "name": "Numeric range",
+    "lucene": "duration:[100 TO 500]",
+    "expectedSql": "SELECT * FROM `logs`.`otel_traces` WHERE (duration BETWEEN 100 AND 500)",
+    "databaseName": "logs",
+    "tableName": "otel_traces",
+    "connectionId": "conn-1",
+    "datasourceType": "mysql",
+    "columns": {
+        "duration": {
+            "name": "duration",
+            "normalizedType": "Float64",
+            "dataType": "Float64",
+            "columnType": "Float64"
+        }
+    },
+    "invertedIndexColumns": []
+}
