@@ -1,7 +1,585 @@
 "use strict";
-(self["webpackChunkdoris_app"] = self["webpackChunkdoris_app"] || []).push([[495],{
+(self["webpackChunkdoris_app"] = self["webpackChunkdoris_app"] || []).push([[285],{
 
-/***/ 5495:
+/***/ 1885:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (/* binding */ TraceDetail)
+/* harmony export */ });
+/* harmony import */ var _grafana_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7781);
+/* harmony import */ var _grafana_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_grafana_data__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _grafana_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8531);
+/* harmony import */ var _grafana_runtime__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2007);
+/* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var jotai__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(3689);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5959);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _services_traces__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(3764);
+/* harmony import */ var _store_discover__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(6247);
+/* harmony import */ var _store_traces__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(3982);
+/* harmony import */ var _utils_data__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(6700);
+function _define_property(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
+function _object_spread(target) {
+    for(var i = 1; i < arguments.length; i++){
+        var source = arguments[i] != null ? arguments[i] : {};
+        var ownKeys = Object.keys(source);
+        if (typeof Object.getOwnPropertySymbols === "function") {
+            ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function(sym) {
+                return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+            }));
+        }
+        ownKeys.forEach(function(key) {
+            _define_property(target, key, source[key]);
+        });
+    }
+    return target;
+}
+
+
+
+
+
+
+
+
+
+function TraceDetail(props) {
+    const currentTable = (0,jotai__WEBPACK_IMPORTED_MODULE_8__/* .useAtomValue */ .md)(_store_traces__WEBPACK_IMPORTED_MODULE_6__/* .currentTraceTableAtom */ .AZ);
+    const currentCatalog = (0,jotai__WEBPACK_IMPORTED_MODULE_8__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .currentCatalogAtom */ .K0);
+    const currentDatabase = (0,jotai__WEBPACK_IMPORTED_MODULE_8__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .currentDatabaseAtom */ .Cf);
+    const [traceData, setTraceData] = (0,jotai__WEBPACK_IMPORTED_MODULE_8__/* .useAtom */ .fp)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .tableTracesDataAtom */ .UB);
+    const selectedRow = (0,jotai__WEBPACK_IMPORTED_MODULE_8__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .selectedRowAtom */ .nn);
+    const selectdbDS = (0,jotai__WEBPACK_IMPORTED_MODULE_8__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .selectedDatasourceAtom */ .SW);
+    const traceTable = (props === null || props === void 0 ? void 0 : props.traceTable) || currentTable || 'otel_traces';
+    const [loading, setLoading] = react__WEBPACK_IMPORTED_MODULE_3___default().useState(false);
+    const { open, traceId } = props;
+    const getTraceData = react__WEBPACK_IMPORTED_MODULE_3___default().useCallback(()=>{
+        let payload = {
+            catalog: currentCatalog,
+            database: currentDatabase,
+            table: traceTable,
+            cluster: '',
+            sort: 'DESC',
+            trace_id: traceId || ''
+        };
+        setLoading(true);
+        (0,_services_traces__WEBPACK_IMPORTED_MODULE_4__/* .getTableDataTraceService */ .hA)(_object_spread({
+            selectdbDS
+        }, payload)).subscribe({
+            next: ({ data, ok })=>{
+                setLoading(false);
+                if (ok) {
+                    const formatedData = (0,_utils_data__WEBPACK_IMPORTED_MODULE_7__/* .formatTracesResData */ .O1)(data.results.getTableDataTrace.frames[0]);
+                    setTraceData(formatedData);
+                }
+            },
+            error: (err)=>{
+                setLoading(false);
+                console.log('Fetch Error', err);
+            }
+        });
+    }, [
+        currentCatalog,
+        currentDatabase,
+        traceTable,
+        selectdbDS,
+        setTraceData,
+        traceId
+    ]);
+    (0,react__WEBPACK_IMPORTED_MODULE_3__.useEffect)(()=>{
+        if (traceId) {
+            getTraceData();
+        }
+    }, [
+        selectedRow.trace_id,
+        currentCatalog,
+        currentDatabase,
+        selectdbDS,
+        setTraceData,
+        getTraceData,
+        traceId
+    ]);
+    function renderTracePanel() {
+        if (traceData) {
+            return /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_3___default().createElement(_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__.PanelRenderer, {
+                title: "trace panel",
+                width: 200,
+                height: 300,
+                pluginId: "traces",
+                options: {},
+                data: {
+                    state: loading ? _grafana_data__WEBPACK_IMPORTED_MODULE_0__.LoadingState.Loading : _grafana_data__WEBPACK_IMPORTED_MODULE_0__.LoadingState.Done,
+                    series: [
+                        traceData
+                    ],
+                    timeRange: {
+                        from: new Date(Date.now() - 15 * 60 * 1000),
+                        to: new Date(),
+                        raw: {
+                            from: 'now-15m',
+                            to: 'now'
+                        }
+                    }
+                }
+            });
+        }
+        return null;
+    }
+    return /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_3___default().createElement((react__WEBPACK_IMPORTED_MODULE_3___default().Fragment), null, open && /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_3___default().createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Drawer, {
+        title: "Trace Panel",
+        onClose: ()=>{
+            var _props_onClose;
+            props === null || props === void 0 ? void 0 : (_props_onClose = props.onClose) === null || _props_onClose === void 0 ? void 0 : _props_onClose.call(props);
+        },
+        size: "lg"
+    }, loading ? /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_3___default().createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.LoadingPlaceholder, {
+        text: `Loading`
+    }) : renderTracePanel()));
+}
+
+
+/***/ }),
+
+/***/ 3764:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, {
+  jo: () => (/* binding */ getOperationListService),
+  FC: () => (/* binding */ getServiceListService),
+  hA: () => (/* binding */ getTableDataTraceService),
+  Cy: () => (/* binding */ getTracesService)
+});
+
+// EXTERNAL MODULE: external "@grafana/runtime"
+var runtime_ = __webpack_require__(8531);
+;// ./services/traces.sql.ts
+// 查询某个Table的Trace详情
+function getQueryTableTraceSQL(params) {
+    const { table, trace_id, database } = params;
+    const sql = `
+      SELECT
+        trace_id AS traceID,
+        span_id AS spanID,
+        parent_span_id AS parentSpanID,
+        span_name AS operationName,
+        service_name AS serviceName,
+        CONCAT(
+          '[',
+          array_join(
+            array_map(
+              (x, y) -> json_object('key', x, 'value', y),
+              map_keys(CAST(CAST(resource_attributes AS TEXT) AS MAP<STRING, STRING>)),
+              map_values(CAST(CAST(resource_attributes AS TEXT) AS MAP<STRING, STRING>))
+            ),
+            ','
+          ),
+          ']'
+        ) AS serviceTags,
+        UNIX_TIMESTAMP(timestamp) * 1000 AS startTime,
+        duration / 1000 AS duration,
+        CONCAT(
+          '[',
+          array_join(
+            array_map(
+              (x, y) -> json_object('key', x, 'value', y),
+              map_keys(CAST(CAST(span_attributes AS TEXT) AS MAP<STRING, STRING>)),
+              map_values(CAST(CAST(span_attributes AS TEXT) AS MAP<STRING, STRING>))
+            ),
+            ','
+          ),
+          ']'
+        ) AS tags,
+        span_kind AS kind,
+        CASE status_code
+          WHEN 'STATUS_CODE_OK' THEN 1
+          WHEN 'STATUS_CODE_ERROR' THEN 2
+          ELSE 0
+        END AS statusCode,
+        status_message AS statusMessage,
+        scope_name AS instrumentationLibraryName,
+        scope_version AS instrumentationLibraryVersion,
+        trace_state AS traceState
+      FROM ${database}.\`${table}\`
+      WHERE trace_id = '${trace_id}';
+    `;
+    return sql;
+}
+function parseDuration(input) {
+    if (!input) {
+        return 0;
+    }
+    if (input.endsWith('ms')) {
+        return parseFloat(input.replace('ms', ''));
+    } else if (input.endsWith('us')) {
+        return parseFloat(input.replace('us', '')) / 1000;
+    } else if (input.endsWith('s')) {
+        return parseFloat(input.replace('s', '')) * 1000;
+    }
+    return 0;
+}
+function tagsToDorisSQLConditions(tags) {
+    if (!tags) {
+        return '1=1';
+    }
+    const conditions = [];
+    const regex = /([\w.]+)=(?:"([^"]+)"|'([^']+)'|([^\s]+))/g;
+    let match;
+    while((match = regex.exec(tags)) !== null){
+        const key = match[1];
+        const val = match[2] || match[3] || match[4];
+        conditions.push(`span_attributes['${key}'] = '${val}'`);
+    }
+    return conditions.length > 0 ? conditions.join(' AND ') : '1=1';
+}
+function buildTraceAggSQLFromParams(params) {
+    const timeFilter = `${params.timeField} >= '${params.startDate}' AND ${params.timeField} < '${params.endDate}'`;
+    const serviceFilter = params.service_name && params.service_name !== 'all' ? `service_name = '${params.service_name}'` : '1=1';
+    const operationFilter = params.operation && params.operation !== 'all' ? `span_name = '${params.operation}'` : '1=1';
+    const statusFilter = params.statusCode && params.statusCode !== 'all' ? `status_code = '${params.statusCode}'` : '1=1';
+    const minDuration = parseDuration(params.minDuration);
+    const maxDuration = parseDuration(params.maxDuration);
+    let durationFilter = '1=1';
+    if (minDuration > 0 && maxDuration > 0) {
+        durationFilter = `trace_duration BETWEEN ${minDuration} AND ${maxDuration}`;
+    } else if (minDuration > 0) {
+        durationFilter = `trace_duration >= ${minDuration}`;
+    } else if (maxDuration > 0) {
+        durationFilter = `trace_duration <= ${maxDuration}`;
+    }
+    const tagsFilter = tagsToDorisSQLConditions(params.tags);
+    let rootSpansFilter = '1=1';
+    if (params.service_name && params.service_name !== 'all') {
+        rootSpansFilter = `service_name = '${params.service_name}'`;
+    }
+    if (params.operation && params.operation !== 'all') {
+        rootSpansFilter += ` AND span_name = '${params.operation}'`;
+    }
+    var _params_page_size;
+    const limit = (_params_page_size = params.page_size) !== null && _params_page_size !== void 0 ? _params_page_size : 1000;
+    var _params_page;
+    const offset = Math.max((((_params_page = params.page) !== null && _params_page !== void 0 ? _params_page : 1) - 1) * limit, 0);
+    let rowNumberOrderBy = 'time DESC';
+    switch(params.sortBy){
+        case 'longest-duration':
+            rowNumberOrderBy = 'trace_duration_ms DESC';
+            break;
+        case 'shortest-duration':
+            rowNumberOrderBy = 'trace_duration_ms ASC';
+            break;
+        case 'most-spans':
+            rowNumberOrderBy = 'spans DESC';
+            break;
+        case 'least-spans':
+            rowNumberOrderBy = 'spans ASC';
+            break;
+        case 'most-recent':
+            rowNumberOrderBy = 'time DESC';
+            break;
+    }
+    const query = `
+USE ${params.database};
+
+WITH
+  trace_durations AS (
+    SELECT
+      trace_id,
+      (UNIX_TIMESTAMP(MAX(end_time)) - UNIX_TIMESTAMP(MIN(timestamp))) * 1000 AS trace_duration
+    FROM ${params.table}
+    WHERE ${timeFilter}
+    GROUP BY trace_id
+  ),
+  all_trace_ids AS (
+    SELECT
+      t.trace_id,
+      MIN(t.${params.timeField}) AS time,
+      d.trace_duration
+    FROM ${params.table} t
+    JOIN trace_durations d ON t.trace_id = d.trace_id
+    WHERE
+      ${timeFilter}
+      AND ${serviceFilter}
+      AND ${operationFilter}
+      AND ${statusFilter}
+      AND ${tagsFilter}
+      AND 1=1
+      AND ${durationFilter}
+    GROUP BY t.trace_id, d.trace_duration
+  ),
+  root_spans AS (
+    SELECT
+      trace_id,
+      span_name AS operation,
+      service_name AS root_service
+    FROM ${params.table}
+    WHERE (parent_span_id IS NULL OR parent_span_id = '') AND ${rootSpansFilter}
+  ),
+  aggregated AS (
+    SELECT
+      UNIX_TIMESTAMP(MIN(t.${params.timeField})) AS time,
+      t.trace_id,
+      r.operation,
+      r.root_service,
+      COLLECT_SET(t.service_name) AS services,
+      COUNT(*) AS spans,
+      SUM(IF(status_code = 'STATUS_CODE_ERROR', 1, 0)) AS error_spans,
+      MAX(duration) / 1000 AS max_span_duration_ms,
+      MAX(UNIX_TIMESTAMP(t.timestamp) * 1000 + duration / 1000) - MIN(UNIX_TIMESTAMP(t.timestamp) * 1000) AS trace_duration_ms,
+      MAX(IF(t.parent_span_id IS NULL OR t.parent_span_id = '', duration, 0)) / 1000 AS root_span_duration_ms
+    FROM ${params.table} t
+    JOIN all_trace_ids a ON t.trace_id = a.trace_id
+    JOIN root_spans r ON t.trace_id = r.trace_id
+    GROUP BY t.trace_id, r.operation, r.root_service
+  ),
+  numbered AS (
+    SELECT
+      a.*,
+      COUNT(*) OVER() AS total_count,
+      ROW_NUMBER() OVER(ORDER BY ${rowNumberOrderBy}) AS rn
+    FROM aggregated a
+  )
+
+SELECT
+  *,
+  total_count AS total
+FROM numbered
+WHERE rn > ${offset} AND rn <= ${offset + limit}
+ORDER BY ${rowNumberOrderBy};
+`;
+    return query;
+}
+function getServiceListSQL(params) {
+    return `
+    SELECT DISTINCT service_name 
+    FROM ${params.table} 
+    WHERE ${params.timeField} BETWEEN '${params.startDate}' AND '${params.endDate}' 
+    ORDER BY service_name ASC
+  `;
+}
+function getOperationListSQL(params) {
+    return `
+    SELECT DISTINCT span_name 
+    FROM ${params.table} 
+    WHERE ${params.timeField} BETWEEN '${params.startDate}' AND '${params.endDate}' 
+    AND service_name = '${params.service_name}'
+    ORDER BY span_name ASC
+  `;
+}
+
+;// ./services/traces.ts
+function _object_without_properties(source, excluded) {
+    if (source == null) return {};
+    var target = _object_without_properties_loose(source, excluded);
+    var key, i;
+    if (Object.getOwnPropertySymbols) {
+        var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+        for(i = 0; i < sourceSymbolKeys.length; i++){
+            key = sourceSymbolKeys[i];
+            if (excluded.indexOf(key) >= 0) continue;
+            if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+            target[key] = source[key];
+        }
+    }
+    return target;
+}
+function _object_without_properties_loose(source, excluded) {
+    if (source == null) return {};
+    var target = {};
+    var sourceKeys = Object.keys(source);
+    var key, i;
+    for(i = 0; i < sourceKeys.length; i++){
+        key = sourceKeys[i];
+        if (excluded.indexOf(key) >= 0) continue;
+        target[key] = source[key];
+    }
+    return target;
+}
+
+
+// 获取table的Trace数据
+function getTableDataTraceService(payload) {
+    const { selectdbDS } = payload, rest = _object_without_properties(payload, [
+        "selectdbDS"
+    ]);
+    const traceSQL = getQueryTableTraceSQL(rest);
+    return (0,runtime_.getBackendSrv)().fetch({
+        url: '/api/ds/query',
+        method: 'POST',
+        data: {
+            queries: [
+                {
+                    refId: 'getTableDataTrace',
+                    datasource: {
+                        type: 'mysql',
+                        uid: selectdbDS.uid
+                    },
+                    rawSql: traceSQL,
+                    format: 'table'
+                }
+            ]
+        },
+        credentials: 'include'
+    });
+}
+// 查询Traces
+function getTracesService(payload) {
+    const { selectdbDS } = payload, rest = _object_without_properties(payload, [
+        "selectdbDS"
+    ]);
+    const getTracesSQL = buildTraceAggSQLFromParams(rest);
+    return (0,runtime_.getBackendSrv)().fetch({
+        url: '/api/ds/query',
+        method: 'POST',
+        data: {
+            queries: [
+                {
+                    refId: 'getTraces',
+                    datasource: {
+                        type: 'mysql',
+                        uid: selectdbDS.uid
+                    },
+                    rawSql: getTracesSQL,
+                    format: 'table'
+                }
+            ]
+        },
+        credentials: 'include'
+    });
+}
+// 查询Trace Services
+function getServiceListService(payload) {
+    const { selectdbDS } = payload, rest = _object_without_properties(payload, [
+        "selectdbDS"
+    ]);
+    const serviceListSQL = getServiceListSQL(rest);
+    return (0,runtime_.getBackendSrv)().fetch({
+        url: '/api/ds/query',
+        method: 'POST',
+        data: {
+            queries: [
+                {
+                    refId: 'getServiceList',
+                    datasource: {
+                        type: 'mysql',
+                        uid: selectdbDS.uid
+                    },
+                    rawSql: serviceListSQL,
+                    format: 'table'
+                }
+            ]
+        },
+        credentials: 'include'
+    });
+}
+// 查询Trace Operations
+function getOperationListService(payload) {
+    const { selectdbDS } = payload, rest = _object_without_properties(payload, [
+        "selectdbDS"
+    ]);
+    const operationListSQL = getOperationListSQL(rest);
+    return (0,runtime_.getBackendSrv)().fetch({
+        url: '/api/ds/query',
+        method: 'POST',
+        data: {
+            queries: [
+                {
+                    refId: 'getOperationList',
+                    datasource: {
+                        type: 'mysql',
+                        uid: selectdbDS.uid
+                    },
+                    rawSql: operationListSQL,
+                    format: 'table'
+                }
+            ]
+        },
+        credentials: 'include'
+    });
+}
+
+
+/***/ }),
+
+/***/ 3982:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   AZ: () => (/* binding */ currentTraceTableAtom),
+/* harmony export */   E: () => (/* binding */ tracesServicesAtom),
+/* harmony export */   VA: () => (/* binding */ traceOperationsAtom),
+/* harmony export */   fy: () => (/* binding */ currentSortAtom),
+/* harmony export */   gL: () => (/* binding */ currentServiceAtom),
+/* harmony export */   jB: () => (/* binding */ tagsAtom),
+/* harmony export */   mH: () => (/* binding */ currentOperationAtom),
+/* harmony export */   oC: () => (/* binding */ minDurationAtom),
+/* harmony export */   ok: () => (/* binding */ tracesAtom),
+/* harmony export */   uS: () => (/* binding */ maxDurationAtom)
+/* harmony export */ });
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2351);
+/* harmony import */ var jotai__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4945);
+
+
+const currentTraceTableAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('');
+const currentServiceAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)(_constants__WEBPACK_IMPORTED_MODULE_0__/* .DEFAULT_SERVICE */ .aR);
+const currentOperationAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)(_constants__WEBPACK_IMPORTED_MODULE_0__/* .DEFAULT_OPERATION */ .UB);
+const currentSortAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('most-recent');
+const tagsAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('');
+const tracesAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)([]);
+const tracesServicesAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)([]);
+const traceOperationsAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)([]);
+const minDurationAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('');
+const maxDurationAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('');
+
+
+/***/ }),
+
+/***/ 5611:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   b: () => (/* binding */ testIds)
+/* harmony export */ });
+const testIds = {
+    appConfig: {
+        apiKey: 'data-testid ac-api-key',
+        apiUrl: 'data-testid ac-api-url',
+        submit: 'data-testid ac-submit-form'
+    },
+    pageOne: {
+        container: 'data-testid pg-one-container',
+        navigateToFour: 'data-testid navigate-to-four'
+    },
+    pageTwo: {
+        container: 'data-testid pg-two-container'
+    },
+    pageThree: {
+        container: 'data-testid pg-three-container'
+    },
+    pageFour: {
+        container: 'data-testid pg-four-container',
+        navigateBack: 'data-testid navigate-back'
+    }
+};
+
+
+/***/ }),
+
+/***/ 9285:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -1136,6 +1714,7 @@ function filter_content_FilterContent() {
 
 function DiscoverSidebar() {
     const [selectedFields, setSelectedFields] = (0,react/* useAtom */.fp)(discover/* selectedFieldsAtom */.Wg);
+    const [selectedSurroundingFields, setSelectedSurroundingFields] = (0,react/* useAtom */.fp)(discover/* surroundingSelectedFieldsAtom */.gj);
     const tableFields = (0,react/* useAtomValue */.md)(discover/* tableFieldsAtom */.D_);
     const [searchable, _setSearchable] = (0,react/* useAtom */.fp)(discover/* searchableAtom */.Mb);
     const [aggregatable, _setAggregatable] = (0,react/* useAtom */.fp)(discover/* aggregatableAtom */.UR);
@@ -1183,12 +1762,21 @@ function DiscoverSidebar() {
             ...selectedFields,
             field
         ]);
+        setSelectedSurroundingFields([
+            ...selectedSurroundingFields,
+            field
+        ]);
     }
     function handleRemove(field) {
         const index = selectedFields.findIndex((item)=>item.Field === field.Field);
         selectedFields.splice(index, 1);
+        const surIndex = selectedSurroundingFields.findIndex((item)=>item.Field === field.Field);
+        selectedSurroundingFields.splice(surIndex, 1);
         setSelectedFields([
             ...selectedFields
+        ]);
+        setSelectedSurroundingFields([
+            ...selectedSurroundingFields
         ]);
     }
     return /*#__PURE__*/ external_react_default().createElement("div", {
@@ -1512,6 +2100,7 @@ function DiscoverHistogram() {
                 const [startIndex, endIndex] = areas[0].coordRange;
                 const timeInterval = interval === type/* IntervalEnum */.B.Auto ? (0,constants/* getAutoInterval */.Vy)(currentDate).interval_unit : interval;
                 const chartsEndDate = dayjs_min_default()(new Date(tableDataCharts[endIndex]['TT'])).add(interval_value, timeInterval);
+                console.log('aaa', discoverCurrent);
                 setDiscoverCurrent(discover_histogram_object_spread_props(discover_histogram_object_spread({}, discoverCurrent), {
                     date: [
                         dayjs_min_default()(tableDataCharts[startIndex]['TT']),
@@ -1600,8 +2189,6 @@ function DiscoverHistogram() {
 
 // EXTERNAL MODULE: ../node_modules/antd/es/button/index.js + 34 modules
 var es_button = __webpack_require__(7413);
-// EXTERNAL MODULE: ../node_modules/antd/es/tooltip/index.js + 90 modules
-var tooltip = __webpack_require__(5395);
 // EXTERNAL MODULE: ../node_modules/@tanstack/react-table/build/lib/index.mjs
 var lib = __webpack_require__(7796);
 // EXTERNAL MODULE: ../node_modules/@tanstack/table-core/build/lib/index.mjs
@@ -1868,70 +2455,6 @@ function ContentItem({ fieldName, fieldValue, fieldType }) {
         tooltip: "Nonequivalent filtration"
     })));
 }
-
-// EXTERNAL MODULE: ../node_modules/@uiw/react-json-view/esm/index.js + 46 modules
-var react_json_view_esm = __webpack_require__(5197);
-;// ./components/discover-content/json-viewer.theme.ts
-const SELECTDB_THEME = {
-    '--w-rjv-font-family': 'monospace',
-    '--w-rjv-color': '#9cdcfe',
-    '--w-rjv-key-number': 'rgb(123, 225, 136)',
-    '--w-rjv-key-string': 'rgb(123, 225, 136)',
-    '--w-rjv-background-color': 'black',
-    '--w-rjv-line-color': '#36334280',
-    '--w-rjv-arrow-color': '#838383',
-    '--w-rjv-edit-color': 'var(--w-rjv-color)',
-    '--w-rjv-info-color': '#9c9c9c7a',
-    '--w-rjv-update-color': '#9cdcfe',
-    '--w-rjv-copied-color': '#9cdcfe',
-    '--w-rjv-copied-success-color': '#28a745',
-    '--w-rjv-curlybraces-color': '#d4d4d4',
-    '--w-rjv-colon-color': '#d4d4d4',
-    '--w-rjv-brackets-color': '#d4d4d4',
-    '--w-rjv-ellipsis-color': '#cb4b16',
-    '--w-rjv-quotes-color': 'var(--w-rjv-key-string)',
-    '--w-rjv-quotes-string-color': 'var(--w-rjv-type-string-color)',
-    '--w-rjv-type-string-color': 'rgb(149, 179, 255)',
-    '--w-rjv-type-int-color': 'rgb(149, 179, 255)',
-    '--w-rjv-type-float-color': 'rgb(149, 179, 255)',
-    '--w-rjv-type-bigint-color': 'rgb(149, 179, 255)',
-    '--w-rjv-type-boolean-color': 'rgb(149, 179, 255)',
-    '--w-rjv-type-date-color': 'rgb(149, 179, 255)',
-    '--w-rjv-type-url-color': 'rgb(149, 179, 255)',
-    '--w-rjv-type-null-color': 'rgb(149, 179, 255)',
-    '--w-rjv-type-nan-color': 'rgb(149, 179, 255)',
-    '--w-rjv-type-undefined-color': 'rgb(149, 179, 255)'
-};
-const SELECTDB_THEME_LIGHT = {
-    '--w-rjv-font-family': 'monospace',
-    '--w-rjv-color': 'hsla(223, 98%, 58%, 1)',
-    '--w-rjv-key-number': 'rgb(123, 225, 136)',
-    '--w-rjv-key-string': 'hsla(134, 100%, 35%, 1)',
-    '--w-rjv-background-color': 'hsla(215, 100%, 95%, 0.2)',
-    '--w-rjv-line-color': '#36334280',
-    '--w-rjv-arrow-color': '#838383',
-    '--w-rjv-edit-color': 'var(--w-rjv-color)',
-    '--w-rjv-info-color': 'hsla(240, 5%, 26%, 1)',
-    '--w-rjv-update-color': '#9cdcfe',
-    '--w-rjv-copied-color': '#9cdcfe',
-    '--w-rjv-copied-success-color': '#28a745',
-    '--w-rjv-curlybraces-color': 'hsla(240, 5%, 26%, 1)',
-    '--w-rjv-colon-color': 'hsla(240, 5%, 26%, 1)',
-    '--w-rjv-brackets-color': 'hsla(240, 5%, 26%, 1)',
-    '--w-rjv-ellipsis-color': '#cb4b16',
-    '--w-rjv-quotes-color': 'var(--w-rjv-key-string)',
-    '--w-rjv-quotes-string-color': 'var(--w-rjv-type-string-color)',
-    '--w-rjv-type-string-color': 'hsla(223, 98%, 58%, 1)',
-    '--w-rjv-type-int-color': 'hsla(223, 98%, 58%, 1)',
-    '--w-rjv-type-float-color': 'hsla(223, 98%, 58%, 1)',
-    '--w-rjv-type-bigint-color': 'hsla(223, 98%, 58%, 1)',
-    '--w-rjv-type-boolean-color': 'hsla(223, 98%, 58%, 1)',
-    '--w-rjv-type-date-color': 'hsla(223, 98%, 58%, 1)',
-    '--w-rjv-type-url-color': 'hsla(223, 98%, 58%, 1)',
-    '--w-rjv-type-null-color': 'hsla(223, 98%, 58%, 1)',
-    '--w-rjv-type-nan-color': 'hsla(223, 98%, 58%, 1)',
-    '--w-rjv-type-undefined-color': 'hsla(223, 98%, 58%, 1)'
-};
 
 // EXTERNAL MODULE: ../node_modules/ahooks/es/useRequest/index.js + 31 modules
 var useRequest = __webpack_require__(5494);
@@ -3086,8 +3609,6 @@ function surrounding_logs_object_spread_props(target, source) {
 
 
 
-
-
 // import dayjs from 'dayjs';
 
 
@@ -3257,7 +3778,7 @@ function SurroundingLogs() {
                         ...selectedResult,
                         ...result2
                     ];
-                    const rowsDataWithUid = yield (0,utils/* generateTableDataUID */.sd)(data);
+                    const rowsDataWithUID = yield (0,utils/* generateTableDataUID */.sd)(data);
                     if (result1.length > 0) {
                         setBeforeCount(result1.length);
                         setBeforeTime(result1[0]._original[currentTimeField]);
@@ -3270,7 +3791,7 @@ function SurroundingLogs() {
                     } else {
                         setAfterTime(selectedRow.time);
                     }
-                    setSurroundingTableData(rowsDataWithUid);
+                    setSurroundingTableData(rowsDataWithUID);
                     setTimeout(()=>{
                         scrollToSelectedRow();
                     }, 50);
@@ -3330,7 +3851,67 @@ function SurroundingLogs() {
         return null;
     };
     const renderSubComponent = ({ row })=>{
-        const subTableData = Object.keys(row.original._original).map((key)=>{
+        // processObject copied/adapted from discover-content to normalize stringified JSON inside fields
+        const processObject = (obj)=>{
+            if (typeof obj !== 'object' || obj === null) {
+                return obj;
+            }
+            const result = {};
+            for(const key in obj){
+                if (obj.hasOwnProperty(key)) {
+                    let value = obj[key];
+                    if (typeof value === 'string') {
+                        let cleanValue = value.trim();
+                        // check for escaped double quotes
+                        if (cleanValue.includes('\\"')) {
+                            try {
+                                cleanValue = JSON.parse(`"${cleanValue}"`);
+                            } catch (e) {
+                            // if parsing fails, keep the original value
+                            }
+                        }
+                        // check for JSON
+                        if (cleanValue.startsWith('{') && cleanValue.endsWith('}') || cleanValue.startsWith('[') && cleanValue.endsWith(']')) {
+                            try {
+                                const parsed = JSON.parse(cleanValue);
+                                value = processObject(parsed);
+                            } catch (e) {
+                                value = obj[key];
+                            }
+                        } else {
+                            value = obj[key];
+                        }
+                    } else if (Array.isArray(value)) {
+                        value = value.map((item)=>{
+                            if (typeof item === 'string') {
+                                let cleanItem = item.trim();
+                                if (cleanItem.includes('\\"')) {
+                                    try {
+                                        cleanItem = JSON.parse(`"${cleanItem}"`);
+                                    } catch (e) {}
+                                }
+                                if (cleanItem.startsWith('{') && cleanItem.endsWith('}') || cleanItem.startsWith('[') && cleanItem.endsWith(']')) {
+                                    try {
+                                        const parsed = JSON.parse(cleanItem);
+                                        return processObject(parsed);
+                                    } catch (e) {
+                                        return item;
+                                    }
+                                }
+                                return item;
+                            }
+                            return typeof item === 'object' && item !== null ? processObject(item) : item;
+                        });
+                    } else if (typeof value === 'object' && value !== null) {
+                        value = processObject(value);
+                    }
+                    result[key] = value;
+                }
+            }
+            return result;
+        };
+        const processedData = processObject(row.original._original);
+        const subTableData = Object.keys(processedData).map((key)=>{
             return {
                 field: key,
                 value: row.original._original[key]
@@ -3340,7 +3921,11 @@ function SurroundingLogs() {
             className: (0,css_.css)`
                     position: relative;
                 `
-        }, /*#__PURE__*/ external_react_default().createElement(ui_.TabsBar, null, state.map((tab, index)=>{
+        }, /*#__PURE__*/ external_react_default().createElement(ui_.TabsBar, {
+            className: (0,css_.css)`
+                        ${theme.isDark ? 'background-color: hsl(var(--n9) / 0.4);' : 'background-color: hsl(var(--b1) / 0.6);'}
+                    `
+        }, state.map((tab, index)=>{
             return /*#__PURE__*/ external_react_default().createElement(ui_.Tab, {
                 key: index,
                 label: tab.label,
@@ -3387,19 +3972,22 @@ function SurroundingLogs() {
             }, /*#__PURE__*/ external_react_default().createElement("div", {
                 className: "w-full break-all"
             }, fieldValue || '-')));
-        }))), state[1].active && /*#__PURE__*/ external_react_default().createElement("div", null, /*#__PURE__*/ external_react_default().createElement(react_json_view_esm/* default */.Ay, {
-            value: row.original._original,
-            className: `-mt-2 pl-11 !leading-6 ${(0,css_.css)`
-                                    .w-rjv-wrap {
-                                        border-left: none !important;
-                                    }
-                                `}`,
-            shortenTextAfterLength: 0,
-            indentWidth: 36,
-            displayDataTypes: false,
-            enableClipboard: false,
-            style: theme.isDark ? SELECTDB_THEME : SELECTDB_THEME_LIGHT
-        }))));
+        }))), state[1].active && /*#__PURE__*/ external_react_default().createElement("div", null, /*#__PURE__*/ external_react_default().createElement("pre", {
+            className: (0,css_.css)`
+                                    padding: 16px;
+                                    margin: 0;
+                                    overflow-x: auto;
+                                    white-space: pre-wrap;
+                                    word-break: break-all;
+                                    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+                                    font-size: 12px;
+                                    line-height: 1.5;
+                                    ${theme.isDark ? 'background-color: #1e1e1e; color: #d4d4d4;' : 'background-color: #f5f5f5; color: #333;'}
+                                    border-radius: 4px;
+                                    max-height: 400px;
+                                    overflow-y: auto;
+                                `
+        }, JSON.stringify(processedData, null, 2)))));
     };
     function generateSurroundingResult(result, timeField) {
         const sortedResult = (0,sortBy/* default */.A)(result, timeField);
@@ -3545,9 +4133,9 @@ function SurroundingLogs() {
                                 className: `max-h-48 overflow-auto`
                             }, /*#__PURE__*/ external_react_default().createElement("div", {
                                 className: "flex items-center break-all py-4"
-                            }, field.value === 'trace_id' ? /*#__PURE__*/ external_react_default().createElement(ui_.Button, null, fieldValue) : /*#__PURE__*/ external_react_default().createElement("span", {
+                            }, field.value === 'trace_id' && fieldValue ? /*#__PURE__*/ external_react_default().createElement(ui_.Button, null, fieldValue) : /*#__PURE__*/ external_react_default().createElement("span", {
                                 className: "text-xs"
-                            }, fieldValue))), /*#__PURE__*/ external_react_default().createElement("div", {
+                            }, fieldValue))), fieldValue ? /*#__PURE__*/ external_react_default().createElement("div", {
                                 className: `filter-content ${(0,css_.css)`
                                             visibility: hidden;
                                         `}`
@@ -3555,7 +4143,7 @@ function SurroundingLogs() {
                                 fieldName: fieldName,
                                 fieldValue: fieldValue,
                                 fieldType: fieldType
-                            })));
+                            })) : null);
                         }
                     };
                 })
@@ -3617,6 +4205,8 @@ function SurroundingLogs() {
 
 // EXTERNAL MODULE: ./components/trace-detail/index.tsx
 var trace_detail = __webpack_require__(1885);
+// EXTERNAL MODULE: external "@grafana/data"
+var data_ = __webpack_require__(7781);
 ;// ./components/discover-content/index.tsx
 'use client';
 function discover_content_define_property(obj, key, value) {
@@ -3671,6 +4261,34 @@ function discover_content_object_spread_props(target, source) {
     }
     return target;
 }
+function discover_content_object_without_properties(source, excluded) {
+    if (source == null) return {};
+    var target = discover_content_object_without_properties_loose(source, excluded);
+    var key, i;
+    if (Object.getOwnPropertySymbols) {
+        var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+        for(i = 0; i < sourceSymbolKeys.length; i++){
+            key = sourceSymbolKeys[i];
+            if (excluded.indexOf(key) >= 0) continue;
+            if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+            target[key] = source[key];
+        }
+    }
+    return target;
+}
+function discover_content_object_without_properties_loose(source, excluded) {
+    if (source == null) return {};
+    var target = {};
+    var sourceKeys = Object.keys(source);
+    var key, i;
+    for(i = 0; i < sourceKeys.length; i++){
+        key = sourceKeys[i];
+        if (excluded.indexOf(key) >= 0) continue;
+        target[key] = source[key];
+    }
+    return target;
+}
+
 
 
 
@@ -3688,14 +4306,11 @@ function discover_content_object_spread_props(target, source) {
 function DiscoverContent({ fetchNextPage, getTraceData }) {
     const theme = (0,ui_.useTheme2)();
     const [fields, setFields] = (0,external_react_.useState)([]);
-    const [currentSelectTable, setCurrentSelectTable] = (0,external_react_.useState)();
     const tableTotalCount = (0,react/* useAtomValue */.md)(discover/* tableTotalCountAtom */.HC);
     const [tableData, _setTableData] = (0,react/* useAtom */.fp)(discover/* tableDataAtom */.q3);
     const [selectedFields, setSelectedFields] = (0,react/* useAtom */.fp)(discover/* selectedFieldsAtom */.Wg);
     const hasSelectedFields = selectedFields.length > 0;
     const currentTimeField = (0,react/* useAtomValue */.md)(discover/* currentTimeFieldAtom */.CA);
-    const tableFields = (0,react/* useAtomValue */.md)(discover/* tableFieldsAtom */.D_);
-    const tables = (0,react/* useAtomValue */.md)(discover/* tablesAtom */.b9);
     // const [surroundingOpen, setSurroundingOpen] = useState(false);
     const [selectedRow, setSelectedRow] = (0,react/* useAtom */.fp)(discover/* selectedRowAtom */.nn);
     const setSurroundingTableData = (0,react/* useSetAtom */.Xr)(discover/* surroundingTableDataAtom */.mj);
@@ -3708,7 +4323,21 @@ function DiscoverContent({ fetchNextPage, getTraceData }) {
     const [drawerOpen, setDrawerOpen] = (0,external_react_.useState)(false);
     const [surroundingLogsOpen, setSurroundingLogsOpen] = (0,external_react_.useState)(false);
     const [_fieldKeyBg, setFieldKeyBg] = (0,external_react_.useState)('#3f3f4f');
-    const IS_TRACE_TABLE = utils_data/* QUERY_TRACE_FIELDS */.fA.every((field)=>!!tableFields.find((item)=>item.value === field));
+    const discoverCurrent = (0,react/* useAtomValue */.md)(discover/* discoverCurrentAtom */.WN);
+    const currentDatasource = (0,react/* useAtomValue */.md)(discover/* selectedDatasourceAtom */.SW);
+    const context = (0,data_.usePluginContext)();
+    // user settings
+    const jsonData = context.meta.jsonData;
+    const { logsConfig = {} } = jsonData;
+    const { database = "", datasource = {}, logsTable = "", targetTraceTable = "" } = logsConfig;
+    // local input state for page-jump control
+    const [jumpPage, setJumpPage] = (0,external_react_.useState)(String(page));
+    (0,external_react_.useEffect)(()=>{
+        setJumpPage(String(page));
+    }, [
+        page
+    ]);
+    const isTargetLogTable = discoverCurrent.table === logsTable && discoverCurrent.database === database && (currentDatasource === null || currentDatasource === void 0 ? void 0 : currentDatasource.id) === (datasource === null || datasource === void 0 ? void 0 : datasource.id);
     (0,external_react_.useEffect)(()=>{
         if (theme.isDark) {
             setFieldKeyBg('#3f3f4f');
@@ -3923,7 +4552,7 @@ function DiscoverContent({ fetchNextPage, getTraceData }) {
                         cursor: pointer;
                         padding-top: 0.5rem;
                         &:hover {
-                            color: rgb(43, 102, 253);
+                            color: #3D71D9;
                         }
                     `
         }, "Surrounding Logs"));
@@ -3959,26 +4588,44 @@ function DiscoverContent({ fetchNextPage, getTraceData }) {
                 }
             },
             {
-                header: 'Time',
+                header: ()=>currentTimeField || 'Time',
                 accessorKey: 'time',
                 cell: ({ row, getValue })=>{
                     const fieldValue = getValue();
                     const fieldName = currentTimeField;
-                    const fieldType = 'DATE';
-                    const timeField = fieldValue;
+                    // try to find field type from tableFields
+                    const fieldInfo = tableFields.find((f)=>f.value === currentTimeField);
+                    const fieldType = (fieldInfo === null || fieldInfo === void 0 ? void 0 : fieldInfo.Type) || '';
+                    let timeField = fieldValue;
+                    // If this field is a valid time field type, try to format it
+                    try {
+                        if (fieldInfo && (0,utils_data/* isValidTimeFieldType */.Q3)(String(fieldInfo.Type).toUpperCase())) {
+                            // if numeric timestamp, convert
+                            const num = Number(fieldValue);
+                            if (!Number.isNaN(num)) {
+                                timeField = (0,utils_data/* formatTimestampToDateTime */.My)(num);
+                            } else {
+                                // otherwise keep raw string (or attempt Date parse)
+                                timeField = String(fieldValue || '');
+                            }
+                        }
+                    } catch (e) {
+                        // fallback to raw
+                        timeField = fieldValue;
+                    }
                     return /*#__PURE__*/ external_react_default().createElement("div", {
                         className: `${(0,css_.css)`
-                                width: 240px;
-                            `} ${HoverStyle}`
+                                 width: 240px;
+                             `} ${HoverStyle}`
                     }, /*#__PURE__*/ external_react_default().createElement("div", {
                         className: (0,css_.css)`
-                                    display: flex;
-                                    align-items: center;
-                                `
+                                     display: flex;
+                                     align-items: center;
+                                 `
                     }, timeField, /*#__PURE__*/ external_react_default().createElement("div", {
                         className: `filter-content ${(0,css_.css)`
-                                        visibility: hidden;
-                                    `}`
+                                         visibility: hidden;
+                                     `}`
                     }, /*#__PURE__*/ external_react_default().createElement(ContentItem, {
                         fieldName: fieldName,
                         fieldValue: fieldValue,
@@ -3991,7 +4638,11 @@ function DiscoverContent({ fetchNextPage, getTraceData }) {
             dynamicColumns.push({
                 accessorKey: '_source',
                 header: '_source',
-                cell: ({ row, getValue })=>{
+                cell: (_param)=>{
+                    var { row, getValue } = _param, rest = discover_content_object_without_properties(_param, [
+                        "row",
+                        "getValue"
+                    ]);
                     const html = getValue();
                     const handleClick = (e)=>{
                         const target = e.target;
@@ -4007,7 +4658,11 @@ function DiscoverContent({ fetchNextPage, getTraceData }) {
                             return;
                         }
                         e.preventDefault();
-                        openTraceDrawer(traceId);
+                        if (isTargetLogTable && targetTraceTable) {
+                            openTraceDrawer(traceId, targetTraceTable);
+                        } else {
+                            openTraceDrawer(traceId);
+                        }
                     };
                     return /*#__PURE__*/ external_react_default().createElement("div", {
                         className: (0,css_.css)`
@@ -4024,7 +4679,7 @@ function DiscoverContent({ fetchNextPage, getTraceData }) {
                                     & .trace-link {
                                         cursor: pointer;
                                         text-decoration: underline;
-                                        color: blue;
+                                        color: #3D71D9;
                                     }
                                 `
                     }, /*#__PURE__*/ external_react_default().createElement("div", {
@@ -4092,25 +4747,17 @@ function DiscoverContent({ fetchNextPage, getTraceData }) {
                                                 padding: 16px 16px 16px 0;
                                                 word-break: break-all;
                                             `
-                            }, field.value === 'trace_id' ? IS_TRACE_TABLE ? /*#__PURE__*/ external_react_default().createElement(es_button/* default */.Ay, {
+                            }, field.value === 'trace_id' ? /*#__PURE__*/ external_react_default().createElement(es_button/* default */.Ay, {
                                 className: (0,css_.css)`padding-left: 0px;`,
-                                onClick: ()=>openTraceDrawer(fieldValue),
+                                onClick: ()=>{
+                                    if (isTargetLogTable && targetTraceTable) {
+                                        openTraceDrawer(fieldValue, targetTraceTable);
+                                    } else {
+                                        openTraceDrawer(fieldValue);
+                                    }
+                                },
                                 type: "link"
-                            }, fieldValue) : /*#__PURE__*/ external_react_default().createElement("div", null, /*#__PURE__*/ external_react_default().createElement(tooltip/* default */.A, {
-                                title: /*#__PURE__*/ external_react_default().createElement("div", null, /*#__PURE__*/ external_react_default().createElement(ui_.Select, {
-                                    onChange: (selectedTable)=>{
-                                        openTraceDrawer(fieldValue, selectedTable.value);
-                                        setCurrentSelectTable(selectedTable.value);
-                                        localStorage.setItem('logMapTraceTable', selectedTable.value);
-                                    },
-                                    value: currentSelectTable,
-                                    width: 15,
-                                    options: tables
-                                }))
-                            }, /*#__PURE__*/ external_react_default().createElement(es_button/* default */.Ay, {
-                                className: (0,css_.css)`padding-left: 0px;`,
-                                type: "link"
-                            }, fieldValue))) : /*#__PURE__*/ external_react_default().createElement("span", {
+                            }, fieldValue) : /*#__PURE__*/ external_react_default().createElement("span", {
                                 className: (0,css_.css)`
                                                         font-size: 12px;
                                                         white-space: nowrap;
@@ -4161,13 +4808,78 @@ function DiscoverContent({ fetchNextPage, getTraceData }) {
                     padding: 0.5rem 1rem;
                     padding-bottom: 20px;
                 `
-    }, /*#__PURE__*/ external_react_default().createElement("div", null, "Total ", tableTotalCount, " rows"), /*#__PURE__*/ external_react_default().createElement(ui_.Pagination, {
+    }, /*#__PURE__*/ external_react_default().createElement("div", null, "Total ", tableTotalCount, " rows"), /*#__PURE__*/ external_react_default().createElement("div", {
+        style: {
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+        }
+    }, /*#__PURE__*/ external_react_default().createElement(ui_.Pagination, {
         currentPage: page,
         numberOfPages: Math.ceil(tableTotalCount / pageSize) || 1,
         onNavigate: (toPage)=>{
             setPage(toPage);
         }
-    })), /*#__PURE__*/ external_react_default().createElement(trace_detail/* default */.A, {
+    }), /*#__PURE__*/ external_react_default().createElement("div", {
+        className: (0,css_.css)`
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                        `
+    }, /*#__PURE__*/ external_react_default().createElement("input", {
+        type: "number",
+        min: 1,
+        step: 1,
+        value: jumpPage,
+        onChange: (e)=>{
+            setJumpPage(e.target.value);
+        },
+        onKeyDown: (e)=>{
+            if (e.key === 'Enter') {
+                const num = Number(jumpPage);
+                const total = Math.max(Math.ceil(tableTotalCount / pageSize) || 1, 1);
+                if (!Number.isNaN(num)) {
+                    const target = Math.min(Math.max(1, Math.floor(num)), total);
+                    setPage(target);
+                    try {
+                        fetchNextPage && fetchNextPage(target);
+                    } catch (e) {}
+                    setJumpPage(String(target));
+                } else {
+                    // reset to current page if invalid
+                    setJumpPage(String(page));
+                }
+            }
+        },
+        className: (0,css_.css)`
+                                width: 72px;
+                                padding: 6px 8px;
+                                border-radius: 4px;
+                                border: 1px solid rgba(0,0,0,0.15);
+                            `
+    }), /*#__PURE__*/ external_react_default().createElement("button", {
+        onClick: ()=>{
+            const num = Number(jumpPage);
+            const total = Math.max(Math.ceil(tableTotalCount / pageSize) || 1, 1);
+            if (!Number.isNaN(num)) {
+                const target = Math.min(Math.max(1, Math.floor(num)), total);
+                setPage(target);
+                try {
+                    fetchNextPage && fetchNextPage(target);
+                } catch (e) {}
+                setJumpPage(String(target));
+            } else {
+                setJumpPage(String(page));
+            }
+        },
+        className: (0,css_.css)`
+                                padding: 6px 10px;
+                                border-radius: 4px;
+                                border: 1px solid rgba(0,0,0,0.15);
+                                background: transparent;
+                                cursor: pointer;
+                            `
+    }, "Go")))), /*#__PURE__*/ external_react_default().createElement(trace_detail/* default */.A, {
         onClose: ()=>setDrawerOpen(false),
         open: drawerOpen,
         traceId: selectedRow === null || selectedRow === void 0 ? void 0 : selectedRow.trace_id,
@@ -4180,7 +4892,7 @@ function DiscoverContent({ fetchNextPage, getTraceData }) {
             setSurroundingDataFilter([]);
             setBeforeCount(0);
             setAfterCount(0);
-            setSelectedSurroundingFields([]);
+            // setSelectedSurroundingFields([]);
             setSurroundingLogsOpen(false);
         }
     }, /*#__PURE__*/ external_react_default().createElement(SurroundingLogs, null)));
@@ -4377,8 +5089,6 @@ function SQLSearch({ style, onQuerying }) {
 
 // EXTERNAL MODULE: ./services/metaservice.ts
 var metaservice = __webpack_require__(8161);
-// EXTERNAL MODULE: external "@grafana/data"
-var data_ = __webpack_require__(7781);
 ;// ./components/discover-header/lucene.tsx
 
 
@@ -4576,7 +5286,9 @@ function DiscoverHeader(props) {
                                 value: item
                             };
                         });
+                        console.log('bbb,', discoverCurrent);
                         setDiscoverCurrent(discover_header_object_spread_props(discover_header_object_spread({}, discoverCurrent), {
+                            table: selectedTable.value,
                             timeField: ((_options_ = options[0]) === null || _options_ === void 0 ? void 0 : _options_.value) || ''
                         }));
                         setTimeFields(options);
@@ -4691,6 +5403,7 @@ function DiscoverHeader(props) {
         width: 15,
         value: currentTable,
         onChange: (selectedTable)=>{
+            console.log('selectedTable.value', selectedTable.value);
             setDiscoverCurrent(discover_header_object_spread_props(discover_header_object_spread({}, discoverCurrent), {
                 table: selectedTable.value
             }));
@@ -6715,38 +7428,7 @@ function PageDiscover() {
 }
 
 
-/***/ }),
-
-/***/ 5611:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   b: () => (/* binding */ testIds)
-/* harmony export */ });
-const testIds = {
-    appConfig: {
-        apiKey: 'data-testid ac-api-key',
-        apiUrl: 'data-testid ac-api-url',
-        submit: 'data-testid ac-submit-form'
-    },
-    pageOne: {
-        container: 'data-testid pg-one-container',
-        navigateToFour: 'data-testid navigate-to-four'
-    },
-    pageTwo: {
-        container: 'data-testid pg-two-container'
-    },
-    pageThree: {
-        container: 'data-testid pg-three-container'
-    },
-    pageFour: {
-        container: 'data-testid pg-four-container',
-        navigateBack: 'data-testid navigate-back'
-    }
-};
-
-
 /***/ })
 
 }]);
-//# sourceMappingURL=495.js.map?_cache=afd36fcc708cb45b3edd
+//# sourceMappingURL=285.js.map?_cache=8e809b6c570e9711ac26
