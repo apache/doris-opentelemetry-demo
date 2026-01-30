@@ -327,7 +327,7 @@ WITH
       span_name AS operation,
       service_name AS root_service
     FROM ${params.table}
-    WHERE (parent_span_id IS NULL OR parent_span_id = '') AND ${rootSpansFilter}
+    WHERE (parent_span_id IS NULL OR parent_span_id = '') AND ${rootSpansFilter} AND ${timeFilter}
   ),
   aggregated AS (
     SELECT
@@ -4315,7 +4315,6 @@ function DiscoverContent({ fetchNextPage, getTraceData }) {
     const [selectedRow, setSelectedRow] = (0,react/* useAtom */.fp)(discover/* selectedRowAtom */.nn);
     const setSurroundingTableData = (0,react/* useSetAtom */.Xr)(discover/* surroundingTableDataAtom */.mj);
     const setSurroundingDataFilter = (0,react/* useSetAtom */.Xr)(discover/* surroundingDataFilterAtom */.wc);
-    const setSelectedSurroundingFields = (0,react/* useSetAtom */.Xr)(discover/* surroundingSelectedFieldsAtom */.gj);
     const setBeforeCount = (0,react/* useSetAtom */.Xr)(discover/* beforeCountAtom */.cn);
     const setAfterCount = (0,react/* useSetAtom */.Xr)(discover/* afterCountAtom */.f5);
     const [pageSize, _setPageSize] = (0,react/* useAtom */.fp)(discover/* pageSizeAtom */.Ol);
@@ -4325,9 +4324,11 @@ function DiscoverContent({ fetchNextPage, getTraceData }) {
     const [_fieldKeyBg, setFieldKeyBg] = (0,external_react_.useState)('#3f3f4f');
     const discoverCurrent = (0,react/* useAtomValue */.md)(discover/* discoverCurrentAtom */.WN);
     const currentDatasource = (0,react/* useAtomValue */.md)(discover/* selectedDatasourceAtom */.SW);
+    const tableFields = (0,react/* useAtomValue */.md)(discover/* tableFieldsAtom */.D_);
     const context = (0,data_.usePluginContext)();
     // user settings
-    const jsonData = context.meta.jsonData;
+    const jsonData = context.meta.jsonData || {};
+    console.log('jsonData', jsonData);
     const { logsConfig = {} } = jsonData;
     const { database = "", datasource = {}, logsTable = "", targetTraceTable = "" } = logsConfig;
     // local input state for page-jump control
@@ -7431,4 +7432,4 @@ function PageDiscover() {
 /***/ })
 
 }]);
-//# sourceMappingURL=285.js.map?_cache=8e809b6c570e9711ac26
+//# sourceMappingURL=285.js.map?_cache=63ce448b9dbb60e51397

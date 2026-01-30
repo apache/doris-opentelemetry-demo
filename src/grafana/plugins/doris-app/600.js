@@ -1688,7 +1688,7 @@ WITH
       span_name AS operation,
       service_name AS root_service
     FROM ${params.table}
-    WHERE (parent_span_id IS NULL OR parent_span_id = '') AND ${rootSpansFilter}
+    WHERE (parent_span_id IS NULL OR parent_span_id = '') AND ${rootSpansFilter} AND ${timeFilter}
   ),
   aggregated AS (
     SELECT
@@ -1910,4 +1910,4 @@ const maxDurationAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)(''
 /***/ })
 
 }]);
-//# sourceMappingURL=600.js.map?_cache=12922f41a29411a668f8
+//# sourceMappingURL=600.js.map?_cache=f94e28dabcb4a2a73d19
