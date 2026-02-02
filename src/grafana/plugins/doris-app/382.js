@@ -1,585 +1,7 @@
 "use strict";
-(self["webpackChunkdoris_app"] = self["webpackChunkdoris_app"] || []).push([[285],{
+(self["webpackChunkdoris_app"] = self["webpackChunkdoris_app"] || []).push([[382],{
 
-/***/ 1885:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   A: () => (/* binding */ TraceDetail)
-/* harmony export */ });
-/* harmony import */ var _grafana_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7781);
-/* harmony import */ var _grafana_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_grafana_data__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _grafana_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8531);
-/* harmony import */ var _grafana_runtime__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2007);
-/* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var jotai__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(3689);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5959);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _services_traces__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(3764);
-/* harmony import */ var _store_discover__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(6247);
-/* harmony import */ var _store_traces__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(3982);
-/* harmony import */ var _utils_data__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(6700);
-function _define_property(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
-}
-function _object_spread(target) {
-    for(var i = 1; i < arguments.length; i++){
-        var source = arguments[i] != null ? arguments[i] : {};
-        var ownKeys = Object.keys(source);
-        if (typeof Object.getOwnPropertySymbols === "function") {
-            ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function(sym) {
-                return Object.getOwnPropertyDescriptor(source, sym).enumerable;
-            }));
-        }
-        ownKeys.forEach(function(key) {
-            _define_property(target, key, source[key]);
-        });
-    }
-    return target;
-}
-
-
-
-
-
-
-
-
-
-function TraceDetail(props) {
-    const currentTable = (0,jotai__WEBPACK_IMPORTED_MODULE_8__/* .useAtomValue */ .md)(_store_traces__WEBPACK_IMPORTED_MODULE_6__/* .currentTraceTableAtom */ .AZ);
-    const currentCatalog = (0,jotai__WEBPACK_IMPORTED_MODULE_8__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .currentCatalogAtom */ .K0);
-    const currentDatabase = (0,jotai__WEBPACK_IMPORTED_MODULE_8__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .currentDatabaseAtom */ .Cf);
-    const [traceData, setTraceData] = (0,jotai__WEBPACK_IMPORTED_MODULE_8__/* .useAtom */ .fp)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .tableTracesDataAtom */ .UB);
-    const selectedRow = (0,jotai__WEBPACK_IMPORTED_MODULE_8__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .selectedRowAtom */ .nn);
-    const selectdbDS = (0,jotai__WEBPACK_IMPORTED_MODULE_8__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_5__/* .selectedDatasourceAtom */ .SW);
-    const traceTable = (props === null || props === void 0 ? void 0 : props.traceTable) || currentTable || 'otel_traces';
-    const [loading, setLoading] = react__WEBPACK_IMPORTED_MODULE_3___default().useState(false);
-    const { open, traceId } = props;
-    const getTraceData = react__WEBPACK_IMPORTED_MODULE_3___default().useCallback(()=>{
-        let payload = {
-            catalog: currentCatalog,
-            database: currentDatabase,
-            table: traceTable,
-            cluster: '',
-            sort: 'DESC',
-            trace_id: traceId || ''
-        };
-        setLoading(true);
-        (0,_services_traces__WEBPACK_IMPORTED_MODULE_4__/* .getTableDataTraceService */ .hA)(_object_spread({
-            selectdbDS
-        }, payload)).subscribe({
-            next: ({ data, ok })=>{
-                setLoading(false);
-                if (ok) {
-                    const formatedData = (0,_utils_data__WEBPACK_IMPORTED_MODULE_7__/* .formatTracesResData */ .O1)(data.results.getTableDataTrace.frames[0]);
-                    setTraceData(formatedData);
-                }
-            },
-            error: (err)=>{
-                setLoading(false);
-                console.log('Fetch Error', err);
-            }
-        });
-    }, [
-        currentCatalog,
-        currentDatabase,
-        traceTable,
-        selectdbDS,
-        setTraceData,
-        traceId
-    ]);
-    (0,react__WEBPACK_IMPORTED_MODULE_3__.useEffect)(()=>{
-        if (traceId) {
-            getTraceData();
-        }
-    }, [
-        selectedRow.trace_id,
-        currentCatalog,
-        currentDatabase,
-        selectdbDS,
-        setTraceData,
-        getTraceData,
-        traceId
-    ]);
-    function renderTracePanel() {
-        if (traceData) {
-            return /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_3___default().createElement(_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__.PanelRenderer, {
-                title: "trace panel",
-                width: 200,
-                height: 300,
-                pluginId: "traces",
-                options: {},
-                data: {
-                    state: loading ? _grafana_data__WEBPACK_IMPORTED_MODULE_0__.LoadingState.Loading : _grafana_data__WEBPACK_IMPORTED_MODULE_0__.LoadingState.Done,
-                    series: [
-                        traceData
-                    ],
-                    timeRange: {
-                        from: new Date(Date.now() - 15 * 60 * 1000),
-                        to: new Date(),
-                        raw: {
-                            from: 'now-15m',
-                            to: 'now'
-                        }
-                    }
-                }
-            });
-        }
-        return null;
-    }
-    return /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_3___default().createElement((react__WEBPACK_IMPORTED_MODULE_3___default().Fragment), null, open && /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_3___default().createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Drawer, {
-        title: "Trace Panel",
-        onClose: ()=>{
-            var _props_onClose;
-            props === null || props === void 0 ? void 0 : (_props_onClose = props.onClose) === null || _props_onClose === void 0 ? void 0 : _props_onClose.call(props);
-        },
-        size: "lg"
-    }, loading ? /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_3___default().createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.LoadingPlaceholder, {
-        text: `Loading`
-    }) : renderTracePanel()));
-}
-
-
-/***/ }),
-
-/***/ 3764:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, {
-  jo: () => (/* binding */ getOperationListService),
-  FC: () => (/* binding */ getServiceListService),
-  hA: () => (/* binding */ getTableDataTraceService),
-  Cy: () => (/* binding */ getTracesService)
-});
-
-// EXTERNAL MODULE: external "@grafana/runtime"
-var runtime_ = __webpack_require__(8531);
-;// ./services/traces.sql.ts
-// 查询某个Table的Trace详情
-function getQueryTableTraceSQL(params) {
-    const { table, trace_id, database } = params;
-    const sql = `
-      SELECT
-        trace_id AS traceID,
-        span_id AS spanID,
-        parent_span_id AS parentSpanID,
-        span_name AS operationName,
-        service_name AS serviceName,
-        CONCAT(
-          '[',
-          array_join(
-            array_map(
-              (x, y) -> json_object('key', x, 'value', y),
-              map_keys(CAST(CAST(resource_attributes AS TEXT) AS MAP<STRING, STRING>)),
-              map_values(CAST(CAST(resource_attributes AS TEXT) AS MAP<STRING, STRING>))
-            ),
-            ','
-          ),
-          ']'
-        ) AS serviceTags,
-        UNIX_TIMESTAMP(timestamp) * 1000 AS startTime,
-        duration / 1000 AS duration,
-        CONCAT(
-          '[',
-          array_join(
-            array_map(
-              (x, y) -> json_object('key', x, 'value', y),
-              map_keys(CAST(CAST(span_attributes AS TEXT) AS MAP<STRING, STRING>)),
-              map_values(CAST(CAST(span_attributes AS TEXT) AS MAP<STRING, STRING>))
-            ),
-            ','
-          ),
-          ']'
-        ) AS tags,
-        span_kind AS kind,
-        CASE status_code
-          WHEN 'STATUS_CODE_OK' THEN 1
-          WHEN 'STATUS_CODE_ERROR' THEN 2
-          ELSE 0
-        END AS statusCode,
-        status_message AS statusMessage,
-        scope_name AS instrumentationLibraryName,
-        scope_version AS instrumentationLibraryVersion,
-        trace_state AS traceState
-      FROM ${database}.\`${table}\`
-      WHERE trace_id = '${trace_id}';
-    `;
-    return sql;
-}
-function parseDuration(input) {
-    if (!input) {
-        return 0;
-    }
-    if (input.endsWith('ms')) {
-        return parseFloat(input.replace('ms', ''));
-    } else if (input.endsWith('us')) {
-        return parseFloat(input.replace('us', '')) / 1000;
-    } else if (input.endsWith('s')) {
-        return parseFloat(input.replace('s', '')) * 1000;
-    }
-    return 0;
-}
-function tagsToDorisSQLConditions(tags) {
-    if (!tags) {
-        return '1=1';
-    }
-    const conditions = [];
-    const regex = /([\w.]+)=(?:"([^"]+)"|'([^']+)'|([^\s]+))/g;
-    let match;
-    while((match = regex.exec(tags)) !== null){
-        const key = match[1];
-        const val = match[2] || match[3] || match[4];
-        conditions.push(`span_attributes['${key}'] = '${val}'`);
-    }
-    return conditions.length > 0 ? conditions.join(' AND ') : '1=1';
-}
-function buildTraceAggSQLFromParams(params) {
-    const timeFilter = `${params.timeField} >= '${params.startDate}' AND ${params.timeField} < '${params.endDate}'`;
-    const serviceFilter = params.service_name && params.service_name !== 'all' ? `service_name = '${params.service_name}'` : '1=1';
-    const operationFilter = params.operation && params.operation !== 'all' ? `span_name = '${params.operation}'` : '1=1';
-    const statusFilter = params.statusCode && params.statusCode !== 'all' ? `status_code = '${params.statusCode}'` : '1=1';
-    const minDuration = parseDuration(params.minDuration);
-    const maxDuration = parseDuration(params.maxDuration);
-    let durationFilter = '1=1';
-    if (minDuration > 0 && maxDuration > 0) {
-        durationFilter = `trace_duration BETWEEN ${minDuration} AND ${maxDuration}`;
-    } else if (minDuration > 0) {
-        durationFilter = `trace_duration >= ${minDuration}`;
-    } else if (maxDuration > 0) {
-        durationFilter = `trace_duration <= ${maxDuration}`;
-    }
-    const tagsFilter = tagsToDorisSQLConditions(params.tags);
-    let rootSpansFilter = '1=1';
-    if (params.service_name && params.service_name !== 'all') {
-        rootSpansFilter = `service_name = '${params.service_name}'`;
-    }
-    if (params.operation && params.operation !== 'all') {
-        rootSpansFilter += ` AND span_name = '${params.operation}'`;
-    }
-    var _params_page_size;
-    const limit = (_params_page_size = params.page_size) !== null && _params_page_size !== void 0 ? _params_page_size : 1000;
-    var _params_page;
-    const offset = Math.max((((_params_page = params.page) !== null && _params_page !== void 0 ? _params_page : 1) - 1) * limit, 0);
-    let rowNumberOrderBy = 'time DESC';
-    switch(params.sortBy){
-        case 'longest-duration':
-            rowNumberOrderBy = 'trace_duration_ms DESC';
-            break;
-        case 'shortest-duration':
-            rowNumberOrderBy = 'trace_duration_ms ASC';
-            break;
-        case 'most-spans':
-            rowNumberOrderBy = 'spans DESC';
-            break;
-        case 'least-spans':
-            rowNumberOrderBy = 'spans ASC';
-            break;
-        case 'most-recent':
-            rowNumberOrderBy = 'time DESC';
-            break;
-    }
-    const query = `
-USE ${params.database};
-
-WITH
-  trace_durations AS (
-    SELECT
-      trace_id,
-      (UNIX_TIMESTAMP(MAX(end_time)) - UNIX_TIMESTAMP(MIN(timestamp))) * 1000 AS trace_duration
-    FROM ${params.table}
-    WHERE ${timeFilter}
-    GROUP BY trace_id
-  ),
-  all_trace_ids AS (
-    SELECT
-      t.trace_id,
-      MIN(t.${params.timeField}) AS time,
-      d.trace_duration
-    FROM ${params.table} t
-    JOIN trace_durations d ON t.trace_id = d.trace_id
-    WHERE
-      ${timeFilter}
-      AND ${serviceFilter}
-      AND ${operationFilter}
-      AND ${statusFilter}
-      AND ${tagsFilter}
-      AND 1=1
-      AND ${durationFilter}
-    GROUP BY t.trace_id, d.trace_duration
-  ),
-  root_spans AS (
-    SELECT
-      trace_id,
-      span_name AS operation,
-      service_name AS root_service
-    FROM ${params.table}
-    WHERE (parent_span_id IS NULL OR parent_span_id = '') AND ${rootSpansFilter} AND ${timeFilter}
-  ),
-  aggregated AS (
-    SELECT
-      UNIX_TIMESTAMP(MIN(t.${params.timeField})) AS time,
-      t.trace_id,
-      r.operation,
-      r.root_service,
-      COLLECT_SET(t.service_name) AS services,
-      COUNT(*) AS spans,
-      SUM(IF(status_code = 'STATUS_CODE_ERROR', 1, 0)) AS error_spans,
-      MAX(duration) / 1000 AS max_span_duration_ms,
-      MAX(UNIX_TIMESTAMP(t.timestamp) * 1000 + duration / 1000) - MIN(UNIX_TIMESTAMP(t.timestamp) * 1000) AS trace_duration_ms,
-      MAX(IF(t.parent_span_id IS NULL OR t.parent_span_id = '', duration, 0)) / 1000 AS root_span_duration_ms
-    FROM ${params.table} t
-    JOIN all_trace_ids a ON t.trace_id = a.trace_id
-    JOIN root_spans r ON t.trace_id = r.trace_id
-    GROUP BY t.trace_id, r.operation, r.root_service
-  ),
-  numbered AS (
-    SELECT
-      a.*,
-      COUNT(*) OVER() AS total_count,
-      ROW_NUMBER() OVER(ORDER BY ${rowNumberOrderBy}) AS rn
-    FROM aggregated a
-  )
-
-SELECT
-  *,
-  total_count AS total
-FROM numbered
-WHERE rn > ${offset} AND rn <= ${offset + limit}
-ORDER BY ${rowNumberOrderBy};
-`;
-    return query;
-}
-function getServiceListSQL(params) {
-    return `
-    SELECT DISTINCT service_name 
-    FROM ${params.table} 
-    WHERE ${params.timeField} BETWEEN '${params.startDate}' AND '${params.endDate}' 
-    ORDER BY service_name ASC
-  `;
-}
-function getOperationListSQL(params) {
-    return `
-    SELECT DISTINCT span_name 
-    FROM ${params.table} 
-    WHERE ${params.timeField} BETWEEN '${params.startDate}' AND '${params.endDate}' 
-    AND service_name = '${params.service_name}'
-    ORDER BY span_name ASC
-  `;
-}
-
-;// ./services/traces.ts
-function _object_without_properties(source, excluded) {
-    if (source == null) return {};
-    var target = _object_without_properties_loose(source, excluded);
-    var key, i;
-    if (Object.getOwnPropertySymbols) {
-        var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-        for(i = 0; i < sourceSymbolKeys.length; i++){
-            key = sourceSymbolKeys[i];
-            if (excluded.indexOf(key) >= 0) continue;
-            if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-            target[key] = source[key];
-        }
-    }
-    return target;
-}
-function _object_without_properties_loose(source, excluded) {
-    if (source == null) return {};
-    var target = {};
-    var sourceKeys = Object.keys(source);
-    var key, i;
-    for(i = 0; i < sourceKeys.length; i++){
-        key = sourceKeys[i];
-        if (excluded.indexOf(key) >= 0) continue;
-        target[key] = source[key];
-    }
-    return target;
-}
-
-
-// 获取table的Trace数据
-function getTableDataTraceService(payload) {
-    const { selectdbDS } = payload, rest = _object_without_properties(payload, [
-        "selectdbDS"
-    ]);
-    const traceSQL = getQueryTableTraceSQL(rest);
-    return (0,runtime_.getBackendSrv)().fetch({
-        url: '/api/ds/query',
-        method: 'POST',
-        data: {
-            queries: [
-                {
-                    refId: 'getTableDataTrace',
-                    datasource: {
-                        type: 'mysql',
-                        uid: selectdbDS.uid
-                    },
-                    rawSql: traceSQL,
-                    format: 'table'
-                }
-            ]
-        },
-        credentials: 'include'
-    });
-}
-// 查询Traces
-function getTracesService(payload) {
-    const { selectdbDS } = payload, rest = _object_without_properties(payload, [
-        "selectdbDS"
-    ]);
-    const getTracesSQL = buildTraceAggSQLFromParams(rest);
-    return (0,runtime_.getBackendSrv)().fetch({
-        url: '/api/ds/query',
-        method: 'POST',
-        data: {
-            queries: [
-                {
-                    refId: 'getTraces',
-                    datasource: {
-                        type: 'mysql',
-                        uid: selectdbDS.uid
-                    },
-                    rawSql: getTracesSQL,
-                    format: 'table'
-                }
-            ]
-        },
-        credentials: 'include'
-    });
-}
-// 查询Trace Services
-function getServiceListService(payload) {
-    const { selectdbDS } = payload, rest = _object_without_properties(payload, [
-        "selectdbDS"
-    ]);
-    const serviceListSQL = getServiceListSQL(rest);
-    return (0,runtime_.getBackendSrv)().fetch({
-        url: '/api/ds/query',
-        method: 'POST',
-        data: {
-            queries: [
-                {
-                    refId: 'getServiceList',
-                    datasource: {
-                        type: 'mysql',
-                        uid: selectdbDS.uid
-                    },
-                    rawSql: serviceListSQL,
-                    format: 'table'
-                }
-            ]
-        },
-        credentials: 'include'
-    });
-}
-// 查询Trace Operations
-function getOperationListService(payload) {
-    const { selectdbDS } = payload, rest = _object_without_properties(payload, [
-        "selectdbDS"
-    ]);
-    const operationListSQL = getOperationListSQL(rest);
-    return (0,runtime_.getBackendSrv)().fetch({
-        url: '/api/ds/query',
-        method: 'POST',
-        data: {
-            queries: [
-                {
-                    refId: 'getOperationList',
-                    datasource: {
-                        type: 'mysql',
-                        uid: selectdbDS.uid
-                    },
-                    rawSql: operationListSQL,
-                    format: 'table'
-                }
-            ]
-        },
-        credentials: 'include'
-    });
-}
-
-
-/***/ }),
-
-/***/ 3982:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   AZ: () => (/* binding */ currentTraceTableAtom),
-/* harmony export */   E: () => (/* binding */ tracesServicesAtom),
-/* harmony export */   VA: () => (/* binding */ traceOperationsAtom),
-/* harmony export */   fy: () => (/* binding */ currentSortAtom),
-/* harmony export */   gL: () => (/* binding */ currentServiceAtom),
-/* harmony export */   jB: () => (/* binding */ tagsAtom),
-/* harmony export */   mH: () => (/* binding */ currentOperationAtom),
-/* harmony export */   oC: () => (/* binding */ minDurationAtom),
-/* harmony export */   ok: () => (/* binding */ tracesAtom),
-/* harmony export */   uS: () => (/* binding */ maxDurationAtom)
-/* harmony export */ });
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2351);
-/* harmony import */ var jotai__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4945);
-
-
-const currentTraceTableAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('');
-const currentServiceAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)(_constants__WEBPACK_IMPORTED_MODULE_0__/* .DEFAULT_SERVICE */ .aR);
-const currentOperationAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)(_constants__WEBPACK_IMPORTED_MODULE_0__/* .DEFAULT_OPERATION */ .UB);
-const currentSortAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('most-recent');
-const tagsAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('');
-const tracesAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)([]);
-const tracesServicesAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)([]);
-const traceOperationsAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)([]);
-const minDurationAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('');
-const maxDurationAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('');
-
-
-/***/ }),
-
-/***/ 5611:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   b: () => (/* binding */ testIds)
-/* harmony export */ });
-const testIds = {
-    appConfig: {
-        apiKey: 'data-testid ac-api-key',
-        apiUrl: 'data-testid ac-api-url',
-        submit: 'data-testid ac-submit-form'
-    },
-    pageOne: {
-        container: 'data-testid pg-one-container',
-        navigateToFour: 'data-testid navigate-to-four'
-    },
-    pageTwo: {
-        container: 'data-testid pg-two-container'
-    },
-    pageThree: {
-        container: 'data-testid pg-three-container'
-    },
-    pageFour: {
-        container: 'data-testid pg-four-container',
-        navigateBack: 'data-testid navigate-back'
-    }
-};
-
-
-/***/ }),
-
-/***/ 9285:
+/***/ 382:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -599,8 +21,8 @@ var css_ = __webpack_require__(6089);
 var runtime_ = __webpack_require__(8531);
 // EXTERNAL MODULE: external "@grafana/ui"
 var ui_ = __webpack_require__(2007);
-// EXTERNAL MODULE: ../node_modules/@emotion/styled/dist/emotion-styled.browser.esm.js + 8 modules
-var emotion_styled_browser_esm = __webpack_require__(2742);
+// EXTERNAL MODULE: ../node_modules/.pnpm/@emotion+styled@11.14.1_@emotion+react@11.11.1_@types+react@19.2.2_react@17.0.2__@types+react@19.2.2_react@17.0.2/node_modules/@emotion/styled/dist/emotion-styled.browser.esm.js + 8 modules
+var emotion_styled_browser_esm = __webpack_require__(31);
 ;// ./components/discover-filter/discover-filter.style.ts
 
 
@@ -672,20 +94,20 @@ const footerStyle = (0,css_.css)`
     }
 `;
 
-// EXTERNAL MODULE: ../node_modules/react-i18next/dist/es/index.js + 15 modules
-var es = __webpack_require__(9315);
-// EXTERNAL MODULE: ../node_modules/jotai/esm/react.mjs
-var react = __webpack_require__(3689);
-// EXTERNAL MODULE: ../node_modules/nanoid/index.browser.js + 1 modules
-var index_browser = __webpack_require__(8987);
+// EXTERNAL MODULE: ../node_modules/react-i18next/dist/es/index.js + 27 modules
+var es = __webpack_require__(9496);
+// EXTERNAL MODULE: ../node_modules/.pnpm/jotai@2.15.0_@babel+core@7.28.4_@babel+template@7.27.2_@types+react@19.2.2_react@17.0.2/node_modules/jotai/esm/react.mjs
+var react = __webpack_require__(122);
+// EXTERNAL MODULE: ../node_modules/.pnpm/nanoid@5.1.6/node_modules/nanoid/index.browser.js + 1 modules
+var index_browser = __webpack_require__(8776);
 // EXTERNAL MODULE: ./store/discover.ts
-var discover = __webpack_require__(6247);
+var discover = __webpack_require__(2539);
 // EXTERNAL MODULE: ./utils/data.ts
-var utils_data = __webpack_require__(6700);
+var utils_data = __webpack_require__(9008);
 // EXTERNAL MODULE: ../node_modules/react-hook-form/dist/index.esm.js
 var index_esm = __webpack_require__(4199);
-// EXTERNAL MODULE: ../node_modules/lodash-es/uniqBy.js + 9 modules
-var uniqBy = __webpack_require__(9851);
+// EXTERNAL MODULE: ../node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/uniqBy.js + 9 modules
+var uniqBy = __webpack_require__(7892);
 ;// ./components/discover-filter/filter-content.tsx
 function _define_property(obj, key, value) {
     if (key in obj) {
@@ -1360,10 +782,10 @@ const getFieldIcon = (columnType)=>{
     return currentColumnType === null || currentColumnType === void 0 ? void 0 : currentColumnType.icon;
 };
 
-// EXTERNAL MODULE: ../node_modules/clsx/dist/clsx.mjs
-var clsx = __webpack_require__(1750);
-// EXTERNAL MODULE: ../node_modules/tailwind-merge/dist/bundle-mjs.mjs
-var bundle_mjs = __webpack_require__(8890);
+// EXTERNAL MODULE: ../node_modules/.pnpm/clsx@2.1.1/node_modules/clsx/dist/clsx.mjs
+var clsx = __webpack_require__(3372);
+// EXTERNAL MODULE: ../node_modules/.pnpm/tailwind-merge@2.6.0/node_modules/tailwind-merge/dist/bundle-mjs.mjs
+var bundle_mjs = __webpack_require__(7297);
 ;// ./utils/tailwind.ts
 
 
@@ -1371,10 +793,10 @@ function cn(...inputs) {
     return (0,bundle_mjs/* twMerge */.QP)((0,clsx/* clsx */.$)(inputs));
 }
 
-// EXTERNAL MODULE: ../node_modules/antd/es/progress/index.js + 15 modules
-var progress = __webpack_require__(9351);
-// EXTERNAL MODULE: ../node_modules/lodash-es/get.js
-var get = __webpack_require__(7230);
+// EXTERNAL MODULE: ../node_modules/.pnpm/antd@5.27.6_date-fns@2.30.0_moment@2.29.4_react-dom@17.0.2_react@17.0.2__react@17.0.2/node_modules/antd/es/progress/index.js + 15 modules
+var progress = __webpack_require__(3113);
+// EXTERNAL MODULE: ../node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/get.js
+var get = __webpack_require__(7981);
 ;// ./components/discover-sidebar/field-item/top-data/top-data.tsx
 
 
@@ -1874,15 +1296,15 @@ function DiscoverSidebar() {
         }))))));
 }
 
-// EXTERNAL MODULE: ../node_modules/echarts-for-react/esm/index.js + 557 modules
-var esm = __webpack_require__(1244);
-// EXTERNAL MODULE: ../node_modules/dayjs/dayjs.min.js
-var dayjs_min = __webpack_require__(5285);
+// EXTERNAL MODULE: ../node_modules/.pnpm/echarts-for-react@3.0.2_echarts@5.6.0_react@17.0.2/node_modules/echarts-for-react/esm/index.js + 557 modules
+var esm = __webpack_require__(4059);
+// EXTERNAL MODULE: ../node_modules/.pnpm/dayjs@1.11.18/node_modules/dayjs/dayjs.min.js
+var dayjs_min = __webpack_require__(228);
 var dayjs_min_default = /*#__PURE__*/__webpack_require__.n(dayjs_min);
 // EXTERNAL MODULE: ./types/type.ts
-var type = __webpack_require__(7944);
+var type = __webpack_require__(6452);
 // EXTERNAL MODULE: ./constants.ts + 1 modules
-var constants = __webpack_require__(2351);
+var constants = __webpack_require__(2560);
 ;// ./components/discover-histogram/index.tsx
 function discover_histogram_define_property(obj, key, value) {
     if (key in obj) {
@@ -2187,12 +1609,12 @@ function DiscoverHistogram() {
     })));
 }
 
-// EXTERNAL MODULE: ../node_modules/antd/es/button/index.js + 34 modules
-var es_button = __webpack_require__(7413);
-// EXTERNAL MODULE: ../node_modules/@tanstack/react-table/build/lib/index.mjs
-var lib = __webpack_require__(7796);
-// EXTERNAL MODULE: ../node_modules/@tanstack/table-core/build/lib/index.mjs
-var build_lib = __webpack_require__(6666);
+// EXTERNAL MODULE: ../node_modules/.pnpm/antd@5.27.6_date-fns@2.30.0_moment@2.29.4_react-dom@17.0.2_react@17.0.2__react@17.0.2/node_modules/antd/es/button/index.js + 19 modules
+var es_button = __webpack_require__(3682);
+// EXTERNAL MODULE: ../node_modules/.pnpm/@tanstack+react-table@8.21.3_react-dom@17.0.2_react@17.0.2__react@17.0.2/node_modules/@tanstack/react-table/build/lib/index.mjs
+var lib = __webpack_require__(3248);
+// EXTERNAL MODULE: ../node_modules/.pnpm/@tanstack+table-core@8.21.3/node_modules/@tanstack/table-core/build/lib/index.mjs
+var build_lib = __webpack_require__(7608);
 ;// ./components/selectdb-ui/sd-collapsible-table/index.tsx
 
 
@@ -2456,8 +1878,8 @@ function ContentItem({ fieldName, fieldValue, fieldType }) {
     })));
 }
 
-// EXTERNAL MODULE: ../node_modules/ahooks/es/useRequest/index.js + 31 modules
-var useRequest = __webpack_require__(5494);
+// EXTERNAL MODULE: ../node_modules/.pnpm/ahooks@3.9.5_react-dom@17.0.2_react@17.0.2__react@17.0.2/node_modules/ahooks/es/useRequest/index.js + 32 modules
+var useRequest = __webpack_require__(8533);
 ;// ./components/surrounding-logs/surrounding-content-item.tsx
 
 
@@ -3167,8 +2589,8 @@ function SurroundingDiscoverFilter(props) {
     }))));
 }
 
-// EXTERNAL MODULE: ../node_modules/lodash-es/sortBy.js + 7 modules
-var sortBy = __webpack_require__(5092);
+// EXTERNAL MODULE: ../node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/sortBy.js + 7 modules
+var sortBy = __webpack_require__(7739);
 ;// ./services/sql.ts
 function getQueryTableResultSQL(params) {
     const indexesStatement = params.indexes_statement;
@@ -3444,7 +2866,7 @@ function getSurroundingDataService(payload) {
 // EXTERNAL MODULE: external "rxjs"
 var external_rxjs_ = __webpack_require__(1269);
 // EXTERNAL MODULE: ./utils/utils.ts
-var utils = __webpack_require__(2551);
+var utils = __webpack_require__(8763);
 ;// ./components/surrounding-logs/content/content-table-actions.tsx
 
 
@@ -4204,7 +3626,7 @@ function SurroundingLogs() {
 }
 
 // EXTERNAL MODULE: ./components/trace-detail/index.tsx
-var trace_detail = __webpack_require__(1885);
+var trace_detail = __webpack_require__(7273);
 // EXTERNAL MODULE: external "@grafana/data"
 var data_ = __webpack_require__(7781);
 ;// ./components/discover-content/index.tsx
@@ -5089,7 +4511,7 @@ function SQLSearch({ style, onQuerying }) {
 }
 
 // EXTERNAL MODULE: ./services/metaservice.ts
-var metaservice = __webpack_require__(8161);
+var metaservice = __webpack_require__(6965);
 ;// ./components/discover-header/lucene.tsx
 
 
@@ -5508,13 +4930,13 @@ function DiscoverHeader(props) {
 }
 
 // EXTERNAL MODULE: ./components/testIds.ts
-var testIds = __webpack_require__(5611);
+var testIds = __webpack_require__(3455);
 // EXTERNAL MODULE: ./services/traces.ts + 1 modules
-var traces = __webpack_require__(3764);
-// EXTERNAL MODULE: ../node_modules/antd/es/message/index.js + 38 modules
-var message = __webpack_require__(4749);
-// EXTERNAL MODULE: ../node_modules/@hyperdx/lucene/lib/lucene.js
-var lucene = __webpack_require__(9894);
+var traces = __webpack_require__(4338);
+// EXTERNAL MODULE: ../node_modules/.pnpm/antd@5.27.6_date-fns@2.30.0_moment@2.29.4_react-dom@17.0.2_react@17.0.2__react@17.0.2/node_modules/antd/es/message/index.js + 38 modules
+var message = __webpack_require__(5334);
+// EXTERNAL MODULE: ../node_modules/.pnpm/@hyperdx+lucene@3.1.1/node_modules/@hyperdx/lucene/lib/lucene.js
+var lucene = __webpack_require__(3596);
 ;// ./utils/query-parser/tokenUtils.ts
 function encodeSpecialTokens(query) {
     return query.replace(/\\\\/g, 'HDX_BACKSLASH_LITERAL').replace('http://', 'http_COLON_//').replace('https://', 'https_COLON_//').replace(/localhost:(\d{1,5})/, 'localhost_COLON_$1').replace(/\\:/g, 'HDX_COLON');
@@ -7429,7 +6851,585 @@ function PageDiscover() {
 }
 
 
+/***/ }),
+
+/***/ 3455:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   b: () => (/* binding */ testIds)
+/* harmony export */ });
+const testIds = {
+    appConfig: {
+        apiKey: 'data-testid ac-api-key',
+        apiUrl: 'data-testid ac-api-url',
+        submit: 'data-testid ac-submit-form'
+    },
+    pageOne: {
+        container: 'data-testid pg-one-container',
+        navigateToFour: 'data-testid navigate-to-four'
+    },
+    pageTwo: {
+        container: 'data-testid pg-two-container'
+    },
+    pageThree: {
+        container: 'data-testid pg-three-container'
+    },
+    pageFour: {
+        container: 'data-testid pg-four-container',
+        navigateBack: 'data-testid navigate-back'
+    }
+};
+
+
+/***/ }),
+
+/***/ 4338:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, {
+  jo: () => (/* binding */ getOperationListService),
+  FC: () => (/* binding */ getServiceListService),
+  hA: () => (/* binding */ getTableDataTraceService),
+  Cy: () => (/* binding */ getTracesService)
+});
+
+// EXTERNAL MODULE: external "@grafana/runtime"
+var runtime_ = __webpack_require__(8531);
+;// ./services/traces.sql.ts
+// 查询某个Table的Trace详情
+function getQueryTableTraceSQL(params) {
+    const { table, trace_id, database } = params;
+    const sql = `
+      SELECT
+        trace_id AS traceID,
+        span_id AS spanID,
+        parent_span_id AS parentSpanID,
+        span_name AS operationName,
+        service_name AS serviceName,
+        CONCAT(
+          '[',
+          array_join(
+            array_map(
+              (x, y) -> json_object('key', x, 'value', y),
+              map_keys(CAST(CAST(resource_attributes AS TEXT) AS MAP<STRING, STRING>)),
+              map_values(CAST(CAST(resource_attributes AS TEXT) AS MAP<STRING, STRING>))
+            ),
+            ','
+          ),
+          ']'
+        ) AS serviceTags,
+        UNIX_TIMESTAMP(timestamp) * 1000 AS startTime,
+        duration / 1000 AS duration,
+        CONCAT(
+          '[',
+          array_join(
+            array_map(
+              (x, y) -> json_object('key', x, 'value', y),
+              map_keys(CAST(CAST(span_attributes AS TEXT) AS MAP<STRING, STRING>)),
+              map_values(CAST(CAST(span_attributes AS TEXT) AS MAP<STRING, STRING>))
+            ),
+            ','
+          ),
+          ']'
+        ) AS tags,
+        span_kind AS kind,
+        CASE status_code
+          WHEN 'STATUS_CODE_OK' THEN 1
+          WHEN 'STATUS_CODE_ERROR' THEN 2
+          ELSE 0
+        END AS statusCode,
+        status_message AS statusMessage,
+        scope_name AS instrumentationLibraryName,
+        scope_version AS instrumentationLibraryVersion,
+        trace_state AS traceState
+      FROM ${database}.\`${table}\`
+      WHERE trace_id = '${trace_id}';
+    `;
+    return sql;
+}
+function parseDuration(input) {
+    if (!input) {
+        return 0;
+    }
+    if (input.endsWith('ms')) {
+        return parseFloat(input.replace('ms', ''));
+    } else if (input.endsWith('us')) {
+        return parseFloat(input.replace('us', '')) / 1000;
+    } else if (input.endsWith('s')) {
+        return parseFloat(input.replace('s', '')) * 1000;
+    }
+    return 0;
+}
+function tagsToDorisSQLConditions(tags) {
+    if (!tags) {
+        return '1=1';
+    }
+    const conditions = [];
+    const regex = /([\w.]+)=(?:"([^"]+)"|'([^']+)'|([^\s]+))/g;
+    let match;
+    while((match = regex.exec(tags)) !== null){
+        const key = match[1];
+        const val = match[2] || match[3] || match[4];
+        conditions.push(`span_attributes['${key}'] = '${val}'`);
+    }
+    return conditions.length > 0 ? conditions.join(' AND ') : '1=1';
+}
+function buildTraceAggSQLFromParams(params) {
+    const timeFilter = `${params.timeField} >= '${params.startDate}' AND ${params.timeField} < '${params.endDate}'`;
+    const serviceFilter = params.service_name && params.service_name !== 'all' ? `service_name = '${params.service_name}'` : '1=1';
+    const operationFilter = params.operation && params.operation !== 'all' ? `span_name = '${params.operation}'` : '1=1';
+    const statusFilter = params.statusCode && params.statusCode !== 'all' ? `status_code = '${params.statusCode}'` : '1=1';
+    const minDuration = parseDuration(params.minDuration);
+    const maxDuration = parseDuration(params.maxDuration);
+    let durationFilter = '1=1';
+    if (minDuration > 0 && maxDuration > 0) {
+        durationFilter = `trace_duration BETWEEN ${minDuration} AND ${maxDuration}`;
+    } else if (minDuration > 0) {
+        durationFilter = `trace_duration >= ${minDuration}`;
+    } else if (maxDuration > 0) {
+        durationFilter = `trace_duration <= ${maxDuration}`;
+    }
+    const tagsFilter = tagsToDorisSQLConditions(params.tags);
+    let rootSpansFilter = '1=1';
+    if (params.service_name && params.service_name !== 'all') {
+        rootSpansFilter = `service_name = '${params.service_name}'`;
+    }
+    if (params.operation && params.operation !== 'all') {
+        rootSpansFilter += ` AND span_name = '${params.operation}'`;
+    }
+    var _params_page_size;
+    const limit = (_params_page_size = params.page_size) !== null && _params_page_size !== void 0 ? _params_page_size : 1000;
+    var _params_page;
+    const offset = Math.max((((_params_page = params.page) !== null && _params_page !== void 0 ? _params_page : 1) - 1) * limit, 0);
+    let rowNumberOrderBy = 'time DESC';
+    switch(params.sortBy){
+        case 'longest-duration':
+            rowNumberOrderBy = 'trace_duration_ms DESC';
+            break;
+        case 'shortest-duration':
+            rowNumberOrderBy = 'trace_duration_ms ASC';
+            break;
+        case 'most-spans':
+            rowNumberOrderBy = 'spans DESC';
+            break;
+        case 'least-spans':
+            rowNumberOrderBy = 'spans ASC';
+            break;
+        case 'most-recent':
+            rowNumberOrderBy = 'time DESC';
+            break;
+    }
+    const query = `
+USE ${params.database};
+
+WITH
+  trace_durations AS (
+    SELECT
+      trace_id,
+      (UNIX_TIMESTAMP(MAX(end_time)) - UNIX_TIMESTAMP(MIN(timestamp))) * 1000 AS trace_duration
+    FROM ${params.table}
+    WHERE ${timeFilter}
+    GROUP BY trace_id
+  ),
+  all_trace_ids AS (
+    SELECT
+      t.trace_id,
+      MIN(t.${params.timeField}) AS time,
+      d.trace_duration
+    FROM ${params.table} t
+    JOIN trace_durations d ON t.trace_id = d.trace_id
+    WHERE
+      ${timeFilter}
+      AND ${serviceFilter}
+      AND ${operationFilter}
+      AND ${statusFilter}
+      AND ${tagsFilter}
+      AND 1=1
+      AND ${durationFilter}
+    GROUP BY t.trace_id, d.trace_duration
+  ),
+  root_spans AS (
+    SELECT
+      trace_id,
+      span_name AS operation,
+      service_name AS root_service
+    FROM ${params.table}
+    WHERE (parent_span_id IS NULL OR parent_span_id = '') AND ${rootSpansFilter} AND ${timeFilter}
+  ),
+  aggregated AS (
+    SELECT
+      UNIX_TIMESTAMP(MIN(t.${params.timeField})) AS time,
+      t.trace_id,
+      r.operation,
+      r.root_service,
+      COLLECT_SET(t.service_name) AS services,
+      COUNT(*) AS spans,
+      SUM(IF(status_code = 'STATUS_CODE_ERROR', 1, 0)) AS error_spans,
+      MAX(duration) / 1000 AS max_span_duration_ms,
+      MAX(UNIX_TIMESTAMP(t.timestamp) * 1000 + duration / 1000) - MIN(UNIX_TIMESTAMP(t.timestamp) * 1000) AS trace_duration_ms,
+      MAX(IF(t.parent_span_id IS NULL OR t.parent_span_id = '', duration, 0)) / 1000 AS root_span_duration_ms
+    FROM ${params.table} t
+    JOIN all_trace_ids a ON t.trace_id = a.trace_id
+    JOIN root_spans r ON t.trace_id = r.trace_id
+    GROUP BY t.trace_id, r.operation, r.root_service
+  ),
+  numbered AS (
+    SELECT
+      a.*,
+      COUNT(*) OVER() AS total_count,
+      ROW_NUMBER() OVER(ORDER BY ${rowNumberOrderBy}) AS rn
+    FROM aggregated a
+  )
+
+SELECT
+  *,
+  total_count AS total
+FROM numbered
+WHERE rn > ${offset} AND rn <= ${offset + limit}
+ORDER BY ${rowNumberOrderBy};
+`;
+    return query;
+}
+function getServiceListSQL(params) {
+    return `
+    SELECT DISTINCT service_name 
+    FROM ${params.table} 
+    WHERE ${params.timeField} BETWEEN '${params.startDate}' AND '${params.endDate}' 
+    ORDER BY service_name ASC
+  `;
+}
+function getOperationListSQL(params) {
+    return `
+    SELECT DISTINCT span_name 
+    FROM ${params.table} 
+    WHERE ${params.timeField} BETWEEN '${params.startDate}' AND '${params.endDate}' 
+    AND service_name = '${params.service_name}'
+    ORDER BY span_name ASC
+  `;
+}
+
+;// ./services/traces.ts
+function _object_without_properties(source, excluded) {
+    if (source == null) return {};
+    var target = _object_without_properties_loose(source, excluded);
+    var key, i;
+    if (Object.getOwnPropertySymbols) {
+        var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+        for(i = 0; i < sourceSymbolKeys.length; i++){
+            key = sourceSymbolKeys[i];
+            if (excluded.indexOf(key) >= 0) continue;
+            if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+            target[key] = source[key];
+        }
+    }
+    return target;
+}
+function _object_without_properties_loose(source, excluded) {
+    if (source == null) return {};
+    var target = {};
+    var sourceKeys = Object.keys(source);
+    var key, i;
+    for(i = 0; i < sourceKeys.length; i++){
+        key = sourceKeys[i];
+        if (excluded.indexOf(key) >= 0) continue;
+        target[key] = source[key];
+    }
+    return target;
+}
+
+
+// 获取table的Trace数据
+function getTableDataTraceService(payload) {
+    const { selectdbDS } = payload, rest = _object_without_properties(payload, [
+        "selectdbDS"
+    ]);
+    const traceSQL = getQueryTableTraceSQL(rest);
+    return (0,runtime_.getBackendSrv)().fetch({
+        url: '/api/ds/query',
+        method: 'POST',
+        data: {
+            queries: [
+                {
+                    refId: 'getTableDataTrace',
+                    datasource: {
+                        type: 'mysql',
+                        uid: selectdbDS.uid
+                    },
+                    rawSql: traceSQL,
+                    format: 'table'
+                }
+            ]
+        },
+        credentials: 'include'
+    });
+}
+// 查询Traces
+function getTracesService(payload) {
+    const { selectdbDS } = payload, rest = _object_without_properties(payload, [
+        "selectdbDS"
+    ]);
+    const getTracesSQL = buildTraceAggSQLFromParams(rest);
+    return (0,runtime_.getBackendSrv)().fetch({
+        url: '/api/ds/query',
+        method: 'POST',
+        data: {
+            queries: [
+                {
+                    refId: 'getTraces',
+                    datasource: {
+                        type: 'mysql',
+                        uid: selectdbDS.uid
+                    },
+                    rawSql: getTracesSQL,
+                    format: 'table'
+                }
+            ]
+        },
+        credentials: 'include'
+    });
+}
+// 查询Trace Services
+function getServiceListService(payload) {
+    const { selectdbDS } = payload, rest = _object_without_properties(payload, [
+        "selectdbDS"
+    ]);
+    const serviceListSQL = getServiceListSQL(rest);
+    return (0,runtime_.getBackendSrv)().fetch({
+        url: '/api/ds/query',
+        method: 'POST',
+        data: {
+            queries: [
+                {
+                    refId: 'getServiceList',
+                    datasource: {
+                        type: 'mysql',
+                        uid: selectdbDS.uid
+                    },
+                    rawSql: serviceListSQL,
+                    format: 'table'
+                }
+            ]
+        },
+        credentials: 'include'
+    });
+}
+// 查询Trace Operations
+function getOperationListService(payload) {
+    const { selectdbDS } = payload, rest = _object_without_properties(payload, [
+        "selectdbDS"
+    ]);
+    const operationListSQL = getOperationListSQL(rest);
+    return (0,runtime_.getBackendSrv)().fetch({
+        url: '/api/ds/query',
+        method: 'POST',
+        data: {
+            queries: [
+                {
+                    refId: 'getOperationList',
+                    datasource: {
+                        type: 'mysql',
+                        uid: selectdbDS.uid
+                    },
+                    rawSql: operationListSQL,
+                    format: 'table'
+                }
+            ]
+        },
+        credentials: 'include'
+    });
+}
+
+
+/***/ }),
+
+/***/ 7273:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (/* binding */ TraceDetail)
+/* harmony export */ });
+/* harmony import */ var _grafana_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7781);
+/* harmony import */ var _grafana_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_grafana_data__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _grafana_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8531);
+/* harmony import */ var _grafana_runtime__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2007);
+/* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var jotai__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(122);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5959);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _services_traces__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4338);
+/* harmony import */ var _store_discover__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(2539);
+/* harmony import */ var _store_traces__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(8882);
+/* harmony import */ var _utils_data__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(9008);
+function _define_property(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
+function _object_spread(target) {
+    for(var i = 1; i < arguments.length; i++){
+        var source = arguments[i] != null ? arguments[i] : {};
+        var ownKeys = Object.keys(source);
+        if (typeof Object.getOwnPropertySymbols === "function") {
+            ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function(sym) {
+                return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+            }));
+        }
+        ownKeys.forEach(function(key) {
+            _define_property(target, key, source[key]);
+        });
+    }
+    return target;
+}
+
+
+
+
+
+
+
+
+
+function TraceDetail(props) {
+    const currentTable = (0,jotai__WEBPACK_IMPORTED_MODULE_3__/* .useAtomValue */ .md)(_store_traces__WEBPACK_IMPORTED_MODULE_7__/* .currentTraceTableAtom */ .AZ);
+    const currentCatalog = (0,jotai__WEBPACK_IMPORTED_MODULE_3__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_6__/* .currentCatalogAtom */ .K0);
+    const currentDatabase = (0,jotai__WEBPACK_IMPORTED_MODULE_3__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_6__/* .currentDatabaseAtom */ .Cf);
+    const [traceData, setTraceData] = (0,jotai__WEBPACK_IMPORTED_MODULE_3__/* .useAtom */ .fp)(_store_discover__WEBPACK_IMPORTED_MODULE_6__/* .tableTracesDataAtom */ .UB);
+    const selectedRow = (0,jotai__WEBPACK_IMPORTED_MODULE_3__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_6__/* .selectedRowAtom */ .nn);
+    const selectdbDS = (0,jotai__WEBPACK_IMPORTED_MODULE_3__/* .useAtomValue */ .md)(_store_discover__WEBPACK_IMPORTED_MODULE_6__/* .selectedDatasourceAtom */ .SW);
+    const traceTable = (props === null || props === void 0 ? void 0 : props.traceTable) || currentTable || 'otel_traces';
+    const [loading, setLoading] = react__WEBPACK_IMPORTED_MODULE_4___default().useState(false);
+    const { open, traceId } = props;
+    const getTraceData = react__WEBPACK_IMPORTED_MODULE_4___default().useCallback(()=>{
+        let payload = {
+            catalog: currentCatalog,
+            database: currentDatabase,
+            table: traceTable,
+            cluster: '',
+            sort: 'DESC',
+            trace_id: traceId || ''
+        };
+        setLoading(true);
+        (0,_services_traces__WEBPACK_IMPORTED_MODULE_5__/* .getTableDataTraceService */ .hA)(_object_spread({
+            selectdbDS
+        }, payload)).subscribe({
+            next: ({ data, ok })=>{
+                setLoading(false);
+                if (ok) {
+                    const formatedData = (0,_utils_data__WEBPACK_IMPORTED_MODULE_8__/* .formatTracesResData */ .O1)(data.results.getTableDataTrace.frames[0]);
+                    setTraceData(formatedData);
+                }
+            },
+            error: (err)=>{
+                setLoading(false);
+                console.log('Fetch Error', err);
+            }
+        });
+    }, [
+        currentCatalog,
+        currentDatabase,
+        traceTable,
+        selectdbDS,
+        setTraceData,
+        traceId
+    ]);
+    (0,react__WEBPACK_IMPORTED_MODULE_4__.useEffect)(()=>{
+        if (traceId) {
+            getTraceData();
+        }
+    }, [
+        selectedRow.trace_id,
+        currentCatalog,
+        currentDatabase,
+        selectdbDS,
+        setTraceData,
+        getTraceData,
+        traceId
+    ]);
+    function renderTracePanel() {
+        if (traceData) {
+            return /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_4___default().createElement(_grafana_runtime__WEBPACK_IMPORTED_MODULE_1__.PanelRenderer, {
+                title: "trace panel",
+                width: 200,
+                height: 300,
+                pluginId: "traces",
+                options: {},
+                data: {
+                    state: loading ? _grafana_data__WEBPACK_IMPORTED_MODULE_0__.LoadingState.Loading : _grafana_data__WEBPACK_IMPORTED_MODULE_0__.LoadingState.Done,
+                    series: [
+                        traceData
+                    ],
+                    timeRange: {
+                        from: new Date(Date.now() - 15 * 60 * 1000),
+                        to: new Date(),
+                        raw: {
+                            from: 'now-15m',
+                            to: 'now'
+                        }
+                    }
+                }
+            });
+        }
+        return null;
+    }
+    return /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_4___default().createElement((react__WEBPACK_IMPORTED_MODULE_4___default().Fragment), null, open && /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_4___default().createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.Drawer, {
+        title: "Trace Panel",
+        onClose: ()=>{
+            var _props_onClose;
+            props === null || props === void 0 ? void 0 : (_props_onClose = props.onClose) === null || _props_onClose === void 0 ? void 0 : _props_onClose.call(props);
+        },
+        size: "lg"
+    }, loading ? /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_4___default().createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__.LoadingPlaceholder, {
+        text: `Loading`
+    }) : renderTracePanel()));
+}
+
+
+/***/ }),
+
+/***/ 8882:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   AZ: () => (/* binding */ currentTraceTableAtom),
+/* harmony export */   E: () => (/* binding */ tracesServicesAtom),
+/* harmony export */   VA: () => (/* binding */ traceOperationsAtom),
+/* harmony export */   fy: () => (/* binding */ currentSortAtom),
+/* harmony export */   gL: () => (/* binding */ currentServiceAtom),
+/* harmony export */   jB: () => (/* binding */ tagsAtom),
+/* harmony export */   mH: () => (/* binding */ currentOperationAtom),
+/* harmony export */   oC: () => (/* binding */ minDurationAtom),
+/* harmony export */   ok: () => (/* binding */ tracesAtom),
+/* harmony export */   uS: () => (/* binding */ maxDurationAtom)
+/* harmony export */ });
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2560);
+/* harmony import */ var jotai__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1750);
+
+
+const currentTraceTableAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('');
+const currentServiceAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)(_constants__WEBPACK_IMPORTED_MODULE_0__/* .DEFAULT_SERVICE */ .aR);
+const currentOperationAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)(_constants__WEBPACK_IMPORTED_MODULE_0__/* .DEFAULT_OPERATION */ .UB);
+const currentSortAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('most-recent');
+const tagsAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('');
+const tracesAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)([]);
+const tracesServicesAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)([]);
+const traceOperationsAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)([]);
+const minDurationAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('');
+const maxDurationAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)('');
+
+
 /***/ })
 
 }]);
-//# sourceMappingURL=285.js.map?_cache=63ce448b9dbb60e51397
+//# sourceMappingURL=382.js.map?_cache=45ca3c194995374286b8
