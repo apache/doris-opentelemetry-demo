@@ -287,8 +287,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+<<<<<<< Updated upstream
 const Discover = /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_0___default().lazy(()=>Promise.all(/* import() */[__webpack_require__.e(680), __webpack_require__.e(572), __webpack_require__.e(20), __webpack_require__.e(439), __webpack_require__.e(382)]).then(__webpack_require__.bind(__webpack_require__, 382)));
 const PageTrace = /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_0___default().lazy(()=>Promise.all(/* import() */[__webpack_require__.e(680), __webpack_require__.e(572), __webpack_require__.e(439), __webpack_require__.e(824)]).then(__webpack_require__.bind(__webpack_require__, 6824)));
+=======
+const Discover = /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_0___default().lazy(()=>Promise.all(/* import() */[__webpack_require__.e(680), __webpack_require__.e(572), __webpack_require__.e(20), __webpack_require__.e(439), __webpack_require__.e(659), __webpack_require__.e(382)]).then(__webpack_require__.bind(__webpack_require__, 382)));
+const PageTrace = /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_0___default().lazy(()=>Promise.all(/* import() */[__webpack_require__.e(680), __webpack_require__.e(572), __webpack_require__.e(439), __webpack_require__.e(659), __webpack_require__.e(824)]).then(__webpack_require__.bind(__webpack_require__, 6824)));
+>>>>>>> Stashed changes
 // const PageDashboard = React.lazy(() => import('../../pages/PageDashboard'));
 function App(_props) {
     return /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Routes, null, /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Route, {
@@ -308,4 +313,8 @@ function App(_props) {
 /***/ })
 
 }]);
+<<<<<<< Updated upstream
 //# sourceMappingURL=42.js.map?_cache=f3f97468bc0710881fb5
+=======
+//# sourceMappingURL=42.js.map?_cache=dad0c51d1ead9b168bd4
+>>>>>>> Stashed changes

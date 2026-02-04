@@ -1,6 +1,7 @@
 "use strict";
 (self["webpackChunkdoris_app"] = self["webpackChunkdoris_app"] || []).push([[824],{
 
+<<<<<<< Updated upstream
 /***/ 4338:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -362,6 +363,8 @@ function getOperationListService(payload) {
 
 /***/ }),
 
+=======
+>>>>>>> Stashed changes
 /***/ 6824:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -1721,6 +1724,7 @@ function PageTrace() {
 }
 
 
+<<<<<<< Updated upstream
 /***/ }),
 
 /***/ 7273:
@@ -1911,3 +1915,9 @@ const maxDurationAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)(''
 
 }]);
 //# sourceMappingURL=824.js.map?_cache=e8f8a0725ff96ada56e3
+=======
+/***/ })
+
+}]);
+//# sourceMappingURL=824.js.map?_cache=82f7b759265fefdd1d12
+>>>>>>> Stashed changes

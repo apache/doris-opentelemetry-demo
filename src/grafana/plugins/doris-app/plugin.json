@@ -11,15 +11,20 @@
         ],
         "description": "",
         "author": {
-            "name": "SelectDB"
+            "name": "VeloDB"
         },
         "logos": {
             "small": "img/logo.svg",
             "large": "img/logo.svg"
         },
         "screenshots": [],
+<<<<<<< Updated upstream
         "version": "1.0.1-alpha.1",
         "updated": "2026-02-02"
+=======
+        "version": "1.0.1-alpha.2",
+        "updated": "2026-02-04"
+>>>>>>> Stashed changes
     },
     "includes": [
         {

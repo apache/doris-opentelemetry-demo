@@ -1,5 +1,14 @@
 # Changelog
 
+<<<<<<< Updated upstream
+=======
+## [1.0.1-alpha.2](https://github.com/jeffreys-cat/grafana-doris-app/compare/v1.0.1-alpha.1...v1.0.1-alpha.2) (2026-02-04)
+
+### 🎫 Chores
+
+* update author name ([b6cd8d1](https://github.com/jeffreys-cat/grafana-doris-app/commit/b6cd8d1e79576bcbc919b2285eae3f9a5b4403aa))
+
+>>>>>>> Stashed changes
 ## [1.0.1-alpha.1](https://github.com/jeffreys-cat/grafana-doris-app/compare/v1.0.0-alpha.1...v1.0.1-alpha.1) (2026-02-02)
 
 ## 1.0.0-alpha.1 (2026-02-02)

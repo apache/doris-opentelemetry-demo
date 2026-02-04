@@ -576,6 +576,7 @@ function getIndexesService({ selectdbDS, database, table }) {
 
 /***/ }),
 
+<<<<<<< Updated upstream
 /***/ 8763:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -942,6 +943,8 @@ function trimSpacesAroundEquals(str) {
 
 /***/ }),
 
+=======
+>>>>>>> Stashed changes
 /***/ 9008:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -986,8 +989,11 @@ function trimSpacesAroundEquals(str) {
 /* harmony import */ var _grafana_data__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_grafana_data__WEBPACK_IMPORTED_MODULE_9__);
 /* harmony import */ var dayjs_plugin_utc__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(8837);
 /* harmony import */ var dayjs_plugin_utc__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(dayjs_plugin_utc__WEBPACK_IMPORTED_MODULE_10__);
+<<<<<<< Updated upstream
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(8763);
 
+=======
+>>>>>>> Stashed changes
 
 
 
@@ -1774,9 +1780,17 @@ function generateHighlightedResults(data, result) {
                 if (isWrappedInQuotes(keyword)) {
                     const parsedKeyword = parseKeywords(keyword);
                     if (parsedKeyword === strValue) {
+<<<<<<< Updated upstream
                         highlightValue = `<mark>${itemValue}</mark>`;
                     } else if (strValue.includes(parsedKeyword)) {
                         highlightValue = highlightDelimiter(strValue, parsedKeyword);
+=======
+                        // highlightValue = `<mark>${itemValue}</mark>`;
+                        highlightValue = itemValue;
+                    } else if (strValue.includes(parsedKeyword)) {
+                        // highlightValue = highlightDelimiter(strValue, parsedKeyword);
+                        highlightValue = strValue;
+>>>>>>> Stashed changes
                     }
                 } else {
                     const tokenizedAns = Array.from(js_tokens__WEBPACK_IMPORTED_MODULE_7___default()(strValue)).map((item)=>item.value);
@@ -1794,9 +1808,18 @@ function generateHighlightedResults(data, result) {
                     }
                     if (ans.length > 0) {
                         highlightValue = ans.reduce((acc, curr)=>{
+<<<<<<< Updated upstream
                             if (keywordsTokens.filter((token)=>!(0,_utils__WEBPACK_IMPORTED_MODULE_11__/* .isIgnorableHighlightToken */ .dW)(token)).find((token)=>compare_ignore_quotes(token, curr.toLowerCase())) || compare_ignore_quotes(keyword.toLowerCase(), curr.toLowerCase())) {
                                 return acc + `<mark>${curr}</mark>`;
                             }
+=======
+                            // if (
+                            //     keywordsTokens.filter(token => !isIgnorableHighlightToken(token)).find(token => compare_ignore_quotes(token, curr.toLowerCase())) ||
+                            //     compare_ignore_quotes(keyword.toLowerCase(), curr.toLowerCase())
+                            // ) {
+                            //     return acc + `<mark>${curr}</mark>`;
+                            // }
+>>>>>>> Stashed changes
                             return acc + curr;
                         }, '');
                     }
@@ -1833,4 +1856,8 @@ const QUERY_TRACE_FIELDS = (/* unused pure expression or super */ null && ([
 /***/ })
 
 }]);
+<<<<<<< Updated upstream
 //# sourceMappingURL=439.js.map?_cache=731b5943bdc7c1368ebd
+=======
+//# sourceMappingURL=439.js.map?_cache=bd08506ba880e5929bd3
+>>>>>>> Stashed changes

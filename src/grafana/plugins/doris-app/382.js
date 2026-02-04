@@ -176,6 +176,7 @@ function FilterContent({ onHide, dataFilterValue }) {
     const [dataFilter, setDataFilter] = (0,react/* useAtom */.fp)(discover/* dataFilterAtom */.EA);
     const [tableFieldValue, setTableFieldValue] = (0,react/* useAtom */.fp)(discover/* tableFieldValuesAtom */.CL);
     const tableData = (0,react/* useAtomValue */.md)(discover/* tableDataAtom */.q3);
+    const indexes = (0,react/* useAtomValue */.md)(discover/* indexesAtom */.Eq);
     const { control, handleSubmit, watch, register, setValue, formState: { errors } } = (0,index_esm/* useForm */.mN)({
         defaultValues: {
             field: {
@@ -249,10 +250,8 @@ function FilterContent({ onHide, dataFilterValue }) {
                 label: op && op.label || op,
                 value: op && op.value || op
             }));
-        // text matching ops to remove for numeric fields
-        const textMatchOps = [
-            'like',
-            'not like',
+        // match_* operators require doris inverted index. Keep LIKE/NOT LIKE available for string-like fields
+        const matchOnlyOps = [
             'match_all',
             'match_any',
             'match_phrase',
@@ -270,18 +269,47 @@ function FilterContent({ onHide, dataFilterValue }) {
         }
         const isNumberOrTime = isNumberField || isTimeField;
         if (isNumberOrTime) {
-            // remove text match ops for number or time fields
+            // remove text match ops (including LIKE/NOT LIKE and match_*) for number or time fields
             return normalized.filter((opItem)=>{
                 const v = String(opItem.value).toLowerCase();
-                return !textMatchOps.includes(v);
+                return !(v === 'like' || v === 'not like' || matchOnlyOps.includes(v));
             });
         }
         // non-number, non-boolean, non-time fields: keep full list
+        // For string-like fields, only allow doris inverted-index text operators when the field has an inverted index
+        try {
+            const fieldName = typeof field === 'string' ? field : field === null || field === void 0 ? void 0 : field.value;
+            // If the user hasn't selected a field yet, show the full list (no gating)
+            if (!fieldName) {
+                return normalized;
+            }
+            // treat "string" here as any type except NUMBER, BOOLEAN, DATE
+            if (!isNumberField && !isBooleanField && !isTimeField) {
+                const hasInverted = Array.isArray(indexes) && indexes.some((idx)=>{
+                    if (!idx || !idx.columnName) {
+                        return false;
+                    }
+                    const t = idx.type || '';
+                    return String(idx.columnName) === String(fieldName) && t.toUpperCase().includes('INVERT');
+                });
+                if (!hasInverted) {
+                    // remove only the match_* operators; allow LIKE/NOT LIKE to remain because they work without inverted index
+                    return normalized.filter((opItem)=>{
+                        const v = String(opItem.value).toLowerCase();
+                        return !matchOnlyOps.includes(v);
+                    });
+                }
+            }
+        } catch (e) {
+        // swallow any unexpected errors and fall back to returning full list
+        }
         return normalized;
     }, [
         isNumberField,
         isBooleanField,
-        isTimeField
+        isTimeField,
+        field,
+        indexes
     ]);
     const getValue = (value)=>isNaN(+value) ? value : +value;
     // Convert an input value according to current field type.
@@ -1609,6 +1637,11 @@ function DiscoverHistogram() {
     })));
 }
 
+<<<<<<< Updated upstream
+=======
+// EXTERNAL MODULE: ../node_modules/.pnpm/antd@5.27.6_date-fns@2.30.0_moment@2.29.4_react-dom@17.0.2_react@17.0.2__react@17.0.2/node_modules/antd/es/tooltip/index.js + 91 modules
+var tooltip = __webpack_require__(8644);
+>>>>>>> Stashed changes
 // EXTERNAL MODULE: ../node_modules/.pnpm/antd@5.27.6_date-fns@2.30.0_moment@2.29.4_react-dom@17.0.2_react@17.0.2__react@17.0.2/node_modules/antd/es/button/index.js + 19 modules
 var es_button = __webpack_require__(3682);
 // EXTERNAL MODULE: ../node_modules/.pnpm/@tanstack+react-table@8.21.3_react-dom@17.0.2_react@17.0.2__react@17.0.2/node_modules/@tanstack/react-table/build/lib/index.mjs
@@ -2098,6 +2131,7 @@ function discover_filter_filter_content_FilterContent(props) {
     const { onHide, dataFilterValue } = props;
     const [surroundingDataFilter, setSurroundingDataFilter] = (0,react/* useAtom */.fp)(discover/* surroundingDataFilterAtom */.wc);
     const tableFields = (0,react/* useAtomValue */.md)(discover/* tableFieldsAtom */.D_);
+    const indexes = (0,react/* useAtomValue */.md)(discover/* indexesAtom */.Eq);
     if (false) // removed by dead control flow
 {}
     const [tableFieldValue, setTableFieldValue] = (0,react/* useAtom */.fp)(discover/* tableFieldValuesAtom */.CL);
@@ -2144,10 +2178,8 @@ function discover_filter_filter_content_FilterContent(props) {
                 label: op && op.label || op,
                 value: op && op.value || op
             }));
-        // text matching ops to remove for numeric fields
-        const textMatchOps = [
-            'like',
-            'not like',
+        // match_* operators require doris inverted index. Keep LIKE/NOT LIKE available for string-like fields
+        const matchOnlyOps = [
             'match_all',
             'match_any',
             'match_phrase',
@@ -2165,18 +2197,44 @@ function discover_filter_filter_content_FilterContent(props) {
         }
         const isNumberOrTime = isNumberField || isTimeField;
         if (isNumberOrTime) {
-            // remove text match ops for number or time fields
+            // remove text match ops (including LIKE/NOT LIKE and match_*) for number or time fields
             return normalized.filter((opItem)=>{
                 const v = String(opItem.value).toLowerCase();
-                return !textMatchOps.includes(v);
+                return !(v === 'like' || v === 'not like' || matchOnlyOps.includes(v));
             });
         }
-        // non-number, non-boolean, non-time fields: keep full list
+        // non-number, non-boolean, non-time fields: keep full list but gate match_* on inverted index
+        try {
+            const fieldName = typeof field === 'string' ? field : field === null || field === void 0 ? void 0 : field.value;
+            if (!fieldName) {
+                return normalized;
+            }
+            if (!isNumberField && !isBooleanField && !isTimeField) {
+                const hasInverted = Array.isArray(indexes) && indexes.some((idx)=>{
+                    if (!idx || !idx.columnName) {
+                        return false;
+                    }
+                    const t = idx.type || '';
+                    return String(idx.columnName) === String(fieldName) && t.toUpperCase().includes('INVERT');
+                });
+                if (!hasInverted) {
+                    // remove only the match_* operators; allow LIKE/NOT LIKE to remain
+                    return normalized.filter((opItem)=>{
+                        const v = String(opItem.value).toLowerCase();
+                        return !matchOnlyOps.includes(v);
+                    });
+                }
+            }
+        } catch (e) {
+        // fallback to full list
+        }
         return normalized;
     }, [
         isNumberField,
         isBooleanField,
-        isTimeField
+        isTimeField,
+        field,
+        indexes
     ]);
     // Convert an input value according to current field type.
     // Preserve explicit empty string ('') so users can set an empty-string value.
@@ -3962,7 +4020,9 @@ function DiscoverContent({ fetchNextPage, getTraceData }) {
                                     max-height: 400px;
                                     overflow-y: auto;
                                 `
-        }, JSON.stringify(processedData, null, 2)))), /*#__PURE__*/ external_react_default().createElement("a", {
+        }, JSON.stringify(processedData, null, 2)))), /*#__PURE__*/ external_react_default().createElement(tooltip/* default */.A, {
+            title: "Surrounding Items will ignore the existing interface's filter conditions and view the context through time."
+        }, /*#__PURE__*/ external_react_default().createElement("a", {
             onClick: ()=>{
                 console.log('row', row);
                 setSurroundingLogsOpen(true);
@@ -3978,7 +4038,7 @@ function DiscoverContent({ fetchNextPage, getTraceData }) {
                             color: #3D71D9;
                         }
                     `
-        }, "Surrounding Logs"));
+        }, "Surrounding items")));
     };
     const callback = (status)=>{
         if (status >= 200 && status <= 299) {
@@ -4309,7 +4369,7 @@ function DiscoverContent({ fetchNextPage, getTraceData }) {
         traceTable: "otel_traces"
     }), surroundingLogsOpen && /*#__PURE__*/ external_react_default().createElement(ui_.Drawer, {
         size: "lg",
-        title: "Surrounding Logs",
+        title: "Surrounding items",
         onClose: ()=>{
             setSurroundingTableData([]);
             setSurroundingDataFilter([]);
@@ -4390,12 +4450,12 @@ function SearchType() {
     const searchMode = searchType === 'Search';
     const theme = (0,ui_.useTheme2)();
     const options = [
-        {
-            label: t`Search`,
-            value: 'Search',
-            disabled: indexes.length === 0,
-            tips: t`Discover.SearchType.Search.DisabledText`
-        },
+        // {
+        //     label: t`Search`,
+        //     value: 'Search',
+        //     disabled: indexes.length === 0,
+        //     tips: t`Discover.SearchType.Search.DisabledText`,
+        // },
         {
             label: 'SQL',
             value: 'SQL'
@@ -6882,6 +6942,7 @@ const testIds = {
 };
 
 
+<<<<<<< Updated upstream
 /***/ }),
 
 /***/ 4338:
@@ -7433,3 +7494,9 @@ const maxDurationAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)(''
 
 }]);
 //# sourceMappingURL=382.js.map?_cache=45ca3c194995374286b8
+=======
+/***/ })
+
+}]);
+//# sourceMappingURL=382.js.map?_cache=08e0206326f2c926fed2
+>>>>>>> Stashed changes
