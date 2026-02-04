@@ -148,7 +148,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "select \r\n$__timeGroup(timestamp,'$interval') as time,\r\ncount(*) as count\r\nfrom\r\notel_logs\r\nwhere $__timeFilter(timestamp)\r\n  and service_name = '$service_name'\r\n  and ('$match_value' = '' or body $match '$match_value')\r\n  and ('$level' = '' or severity_text = '$level')\r\ngroup by time\r\norder by time desc\r\n;",
+          "rawSql": "select \r\n$__timeGroup(timestamp,'$interval') as time,\r\ncount(*) as count\r\nfrom\r\notel.otel_logs\r\nwhere $__timeFilter(timestamp)\r\n  and service_name = '$service_name'\r\n  and ('$match_value' = '' or body $match '$match_value')\r\n  and ('$level' = '' or severity_text = '$level')\r\ngroup by time\r\norder by time desc\r\n;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -303,7 +303,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "select\r\n    $__time(timestamp),\r\n    service_name as serviceName,\r\n    severity_text as level,\r\n    trace_id as traceID,\r\n    body\r\nfrom otel_logs\r\nwhere $__timeFilter(timestamp)\r\n  and service_name = '$service_name'\r\n  and ('$match_value' = '' or body $match '$match_value')\r\n  and ('$level' = '' or severity_text = '$level')\r\n  and ('' = '$trace_id' or trace_id = '$trace_id')\r\norder by timestamp desc\r\nlimit 100\r\n;",
+          "rawSql": "select\r\n    $__time(timestamp),\r\n    service_name as serviceName,\r\n    severity_text as level,\r\n    trace_id as traceID,\r\n    body\r\nfrom otel.otel_logs\r\nwhere $__timeFilter(timestamp)\r\n  and service_name = '$service_name'\r\n  and ('$match_value' = '' or body $match '$match_value')\r\n  and ('$level' = '' or severity_text = '$level')\r\n  and ('' = '$trace_id' or trace_id = '$trace_id')\r\norder by timestamp desc\r\nlimit 100\r\n;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -344,12 +344,12 @@
           "type": "mysql",
           "uid": "doris"
         },
-        "definition": "select service_name from otel_logs group by service_name;\n",
+        "definition": "select service_name from otel.otel_logs group by service_name;\n",
         "includeAll": false,
         "label": "service_name",
         "name": "service_name",
         "options": [],
-        "query": "select service_name from otel_logs group by service_name;\n",
+        "query": "select service_name from otel.otel_logs group by service_name;\n",
         "refresh": 1,
         "regex": "",
         "sort": 5,

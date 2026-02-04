@@ -115,7 +115,7 @@
           "format": "time_series",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "select\r\n  $__timeGroup(timestamp, '$interval') as time,\r\n  CAST(attributes ['span.name'] AS STRING) AS span_name,\r\n  sum(count) / (${__interval_ms} / 1000) as QPS\r\nfrom\r\n  otel_metrics_histogram\r\nwhere\r\n  service_name = '${service_name}'\r\n  and metric_name = 'traces.span.metrics.duration'\r\n  and $__timeFilter(timestamp)\r\nGROUP BY\r\n  time,\r\n  span_name\r\nORDER BY\r\n  time,\r\n  span_name;",
+          "rawSql": "select\r\n  $__timeGroup(timestamp, '$interval') as time,\r\n  CAST(attributes ['span.name'] AS STRING) AS span_name,\r\n  sum(count) / (${__interval_ms} / 1000) as QPS\r\nfrom\r\n  otel.otel_metrics_histogram\r\nwhere\r\n  service_name = '${service_name}'\r\n  and metric_name = 'traces.span.metrics.duration'\r\n  and $__timeFilter(timestamp)\r\nGROUP BY\r\n  time,\r\n  span_name\r\nORDER BY\r\n  time,\r\n  span_name;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -257,7 +257,7 @@
           "format": "time_series",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "select\r\n  $__timeGroup(timestamp, '$interval') as time,\r\n  CAST(attributes ['span.name'] AS STRING) AS span_name,\r\n  sum(sum) / sum(count) as avg_duration\r\nfrom\r\n  otel_metrics_histogram\r\nwhere\r\n  service_name = '${service_name}'\r\n  and metric_name = 'traces.span.metrics.duration'\r\n  and $__timeFilter(timestamp)\r\nGROUP BY\r\n  time,\r\n  span_name\r\nORDER BY\r\n  time,\r\n  span_name;",
+          "rawSql": "select\r\n  $__timeGroup(timestamp, '$interval') as time,\r\n  CAST(attributes ['span.name'] AS STRING) AS span_name,\r\n  sum(sum) / sum(count) as avg_duration\r\nfrom\r\n  otel.otel_metrics_histogram\r\nwhere\r\n  service_name = '${service_name}'\r\n  and metric_name = 'traces.span.metrics.duration'\r\n  and $__timeFilter(timestamp)\r\nGROUP BY\r\n  time,\r\n  span_name\r\nORDER BY\r\n  time,\r\n  span_name;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -316,11 +316,11 @@
           "text": "frontend-web",
           "value": "frontend-web"
         },
-        "definition": "select distinct service_name from otel_traces;",
+        "definition": "select distinct service_name from otel.otel_traces;",
         "label": "service_name",
         "name": "service_name",
         "options": [],
-        "query": "select distinct service_name from otel_traces;",
+        "query": "select distinct service_name from otel.otel_traces;",
         "refresh": 1,
         "regex": "",
         "type": "query"

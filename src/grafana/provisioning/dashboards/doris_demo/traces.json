@@ -153,7 +153,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "with a as (\r\nselect trace_id, min(timestamp) as t\r\n  from otel_traces\r\n  where $__timeFilter(timestamp)\r\n    and service_name = '$service_name'\r\n    and ($operation = 'all' or span_name = $operation)\r\n    and ($status = 'all' or status_code = $status)\r\n  group by trace_id\r\n  order by t desc\r\n  limit 100\r\n)\r\nselect\r\n    unix_timestamp(min(timestamp)) as time,\r\n    max(duration) / 1000 as 'duration (ms)',\r\n    count(*) as spans,\r\n    sum(if('STATUS_CODE_ERROR' = status_code, 1, 0)) as errors,\r\n    trace_id,\r\n    collect_set(service_name) as services\r\nfrom otel_traces\r\nwhere trace_id in (select trace_id from a)\r\ngroup by trace_id\r\nORDER BY time desc\r\n;\r\n",
+          "rawSql": "with a as (\r\nselect trace_id, min(timestamp) as t\r\n  from otel.otel_traces\r\n  where $__timeFilter(timestamp)\r\n    and service_name = '$service_name'\r\n    and ($operation = 'all' or span_name = $operation)\r\n    and ($status = 'all' or status_code = $status)\r\n  group by trace_id\r\n  order by t desc\r\n  limit 100\r\n)\r\nselect\r\n    unix_timestamp(min(timestamp)) as time,\r\n    max(duration) / 1000 as 'duration (ms)',\r\n    count(*) as spans,\r\n    sum(if('STATUS_CODE_ERROR' = status_code, 1, 0)) as errors,\r\n    trace_id,\r\n    collect_set(service_name) as services\r\nfrom otel.otel_traces\r\nwhere trace_id in (select trace_id from a)\r\ngroup by trace_id\r\nORDER BY time desc\r\n;\r\n",
           "refId": "A",
           "sql": {
             "columns": [
@@ -193,12 +193,12 @@
           "type": "mysql",
           "uid": "doris"
         },
-        "definition": "select distinct service_name from otel_traces;",
+        "definition": "select distinct service_name from otel.otel_traces;",
         "includeAll": false,
         "label": "service_name",
         "name": "service_name",
         "options": [],
-        "query": "select distinct service_name from otel_traces;",
+        "query": "select distinct service_name from otel.otel_traces;",
         "refresh": 1,
         "regex": "",
         "sort": 5,
@@ -214,12 +214,12 @@
           "type": "mysql",
           "uid": "doris"
         },
-        "definition": "select span_name from otel_traces where service_name = '$service_name' group by span_name;",
+        "definition": "select span_name from otel.otel_traces where service_name = '$service_name' group by span_name;",
         "includeAll": true,
         "label": "operation",
         "name": "operation",
         "options": [],
-        "query": "select span_name from otel_traces where service_name = '$service_name' group by span_name;",
+        "query": "select span_name from otel.otel_traces where service_name = '$service_name' group by span_name;",
         "refresh": 1,
         "regex": "",
         "sort": 5,
