@@ -1,5 +1,7 @@
 # Changelog
 
+## [1.0.1-alpha.3](https://github.com/jeffreys-cat/grafana-doris-app/compare/v1.0.1-alpha.2...v1.0.1-alpha.3) (2026-02-05)
+
 ## [1.0.1-alpha.2](https://github.com/jeffreys-cat/grafana-doris-app/compare/v1.0.1-alpha.1...v1.0.1-alpha.2) (2026-02-04)
 
 ### 🎫 Chores

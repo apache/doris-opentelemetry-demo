@@ -169,12 +169,13 @@ WITH
     GROUP BY t.trace_id, d.trace_duration
   ),
   root_spans AS (
-    SELECT
-      trace_id,
-      span_name AS operation,
-      service_name AS root_service
+    SELECT trace_id, span_name AS operation, service_name AS root_service
     FROM ${params.table}
-    WHERE (parent_span_id IS NULL OR parent_span_id = '') AND ${rootSpansFilter} AND ${timeFilter}
+    WHERE (parent_span_id IS NULL
+    OR parent_span_id = '')
+    AND ${timeFilter}
+    AND ${rootSpansFilter}
+    group by trace_id,operation,root_service
   ),
   aggregated AS (
     SELECT
@@ -914,4 +915,4 @@ const maxDurationAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .eU)(''
 /***/ })
 
 }]);
-//# sourceMappingURL=659.js.map?_cache=6b87f40f0978b23bc2bf
+//# sourceMappingURL=659.js.map?_cache=e4956ecb2028c715bcab
