@@ -720,7 +720,7 @@ const FIELD_TYPES = [
             'DOUBLE'
         ],
         icon: /*#__PURE__*/ external_react_default().createElement(ui_.Icon, {
-            name: "percentage"
+            name: "list-ol"
         })
     },
     {
@@ -6942,4 +6942,4 @@ const testIds = {
 /***/ })
 
 }]);
-//# sourceMappingURL=382.js.map?_cache=08e0206326f2c926fed2
+//# sourceMappingURL=382.js.map?_cache=e94df3781c745de07e6e

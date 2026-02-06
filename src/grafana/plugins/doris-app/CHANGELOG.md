@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1](https://github.com/jeffreys-cat/grafana-doris-app/compare/v1.0.1-alpha.3...v1.0.1) (2026-02-06)
+
+### ✨ Features
+
+* storage the config ([122cff9](https://github.com/jeffreys-cat/grafana-doris-app/commit/122cff91743eb6b8c3e031864298fa4492bef4ea))
+* storage the header conds ([8d8773b](https://github.com/jeffreys-cat/grafana-doris-app/commit/8d8773bf1e43fdbcb9f1c90259583743421deeef))
+* update number type icon ([c9d7c54](https://github.com/jeffreys-cat/grafana-doris-app/commit/c9d7c546e2bcfc7a888afe015ad99e15fbbfaacf))
+
 ## [1.0.1-alpha.3](https://github.com/jeffreys-cat/grafana-doris-app/compare/v1.0.1-alpha.2...v1.0.1-alpha.3) (2026-02-05)
 
 ## [1.0.1-alpha.2](https://github.com/jeffreys-cat/grafana-doris-app/compare/v1.0.1-alpha.1...v1.0.1-alpha.2) (2026-02-04)

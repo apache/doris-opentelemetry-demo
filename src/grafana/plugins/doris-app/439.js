@@ -70,16 +70,16 @@
 
 const locationAtom = (0,jotai_location__WEBPACK_IMPORTED_MODULE_2__/* .atomWithLocation */ .N)();
 const dataFilterAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)([]);
-const discoverCurrentAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)(_utils_data__WEBPACK_IMPORTED_MODULE_4__/* .DISCOVER_DEFAULT_STATUS */ .lv);
+const discoverCurrentAtom = (0,jotai_utils__WEBPACK_IMPORTED_MODULE_1__/* .atomWithStorage */ .tG)('discover-current', _utils_data__WEBPACK_IMPORTED_MODULE_4__/* .DISCOVER_DEFAULT_STATUS */ .lv);
 // databases
 const databasesAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)([]);
 const settingDatabasesAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)([]);
-const tablesAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)([]);
+const tablesAtom = (0,jotai_utils__WEBPACK_IMPORTED_MODULE_1__/* .atomWithStorage */ .tG)('discover-tables', []);
 const settingTablesAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)([]);
-const currentCatalogAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)('internal');
-const searchTypeAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)('Lucene');
+const currentCatalogAtom = (0,jotai_utils__WEBPACK_IMPORTED_MODULE_1__/* .atomWithStorage */ .tG)('discover-current-catalog', 'internal');
+const searchTypeAtom = (0,jotai_utils__WEBPACK_IMPORTED_MODULE_1__/* .atomWithStorage */ .tG)('discover-search-type', 'Lucene');
 const currentDatabaseAtom = (0,jotai_utils__WEBPACK_IMPORTED_MODULE_1__/* .selectAtom */ .mg)(discoverCurrentAtom, (current)=>current.database);
-const currentTableAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)('');
+const currentTableAtom = (0,jotai_utils__WEBPACK_IMPORTED_MODULE_1__/* .atomWithStorage */ .tG)('discover-current-table', '');
 const currentClusterAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)('');
 const currentTimeFieldAtom = (0,jotai_utils__WEBPACK_IMPORTED_MODULE_1__/* .selectAtom */ .mg)(discoverCurrentAtom, (current)=>current.timeField);
 const currentDateAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)(_utils_data__WEBPACK_IMPORTED_MODULE_4__/* .DISCOVER_SHORTCUTS */ .oU[2].range());
@@ -91,8 +91,8 @@ const activeShortcutAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)
 const dorisInfoAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)({});
 const disabledOptionsAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)([]);
 const selectedFieldsAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)([]);
-const tableFieldsAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)([]);
-const timeFieldsAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)([]);
+const tableFieldsAtom = (0,jotai_utils__WEBPACK_IMPORTED_MODULE_1__/* .atomWithStorage */ .tG)('discover-table-fields', []);
+const timeFieldsAtom = (0,jotai_utils__WEBPACK_IMPORTED_MODULE_1__/* .atomWithStorage */ .tG)('discover-time-fields', []);
 const tableDataAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)([]);
 const topDataAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)([]);
 const surroundingTableDataAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)([]);
@@ -121,7 +121,7 @@ const afterCountAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)(0);
 const surroundingTableFieldsAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)([]);
 const surroundingSelectedFieldsAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)([]);
 const datasourcesAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)([]);
-const selectedDatasourceAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)();
+const selectedDatasourceAtom = (0,jotai_utils__WEBPACK_IMPORTED_MODULE_1__/* .atomWithStorage */ .tG)('discover-selected-datasource', undefined);
 const timeRangeAtom = (0,jotai__WEBPACK_IMPORTED_MODULE_0__/* .atom */ .eU)({
     from: _utils_data__WEBPACK_IMPORTED_MODULE_4__/* .DISCOVER_SHORTCUTS */ .oU[2].range()[0].toDate(),
     to: _utils_data__WEBPACK_IMPORTED_MODULE_4__/* .DISCOVER_SHORTCUTS */ .oU[2].range()[1].toDate(),
@@ -1470,4 +1470,4 @@ const QUERY_TRACE_FIELDS = (/* unused pure expression or super */ null && ([
 /***/ })
 
 }]);
-//# sourceMappingURL=439.js.map?_cache=bd08506ba880e5929bd3
+//# sourceMappingURL=439.js.map?_cache=628e418786cac469a174
