@@ -18,7 +18,7 @@ jinja2==3.1.6
 locust==2.33.0
 locust-plugins[playwright]==4.6.0
 markupsafe==3.0.2
-msgpack==1.1.0
+msgpack==1.2.1
 opentelemetry-api==1.30.0
 opentelemetry-exporter-otlp-proto-grpc==1.30.0
 opentelemetry-instrumentation==0.51b0
