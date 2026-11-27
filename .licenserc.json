@@ -1,4 +1,5 @@
-{
+[
+  {
     "**/*.{go,cs,h,cpp,js,ts,tsx,rs}": [
       "// Copyright The OpenTelemetry Authors",
       "// SPDX-License-Identifier: Apache-2.0"
@@ -53,6 +54,14 @@
         "src/recommendation/demo_pb2.py",
         "src/recommendation/demo_pb2_grpc.py",
         "src/frontend/protos/demo.ts",
-        "internal/tools/"
+        "internal/tools/",
+        ".asf.yaml"
+    ]
+  },
+  {
+    ".asf.yaml": [
+      "# Licensed to the Apache Software Foundation (ASF) under one",
+      "#   http://www.apache.org/licenses/LICENSE-2.0"
     ]
   }
+]
